@@ -80,7 +80,7 @@ export default function Home() {
                 sx={({ palette }) => ({
                   width: 100,
                   height: 100,
-                  bgcolor: palette.primary.Box,
+                  bgcolor: palette.primary.main,
                   border: "1px solid white",
                 })}
               />
