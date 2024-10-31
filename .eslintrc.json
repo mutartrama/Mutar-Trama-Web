@@ -1,3 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:prettier/recommended" // Agrega esta línea
+  ],
+  "rules": {
+    "semi": ["error", "always"] // Asegúrate de que esta línea esté presente
+  }
 }
