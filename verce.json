@@ -4,8 +4,8 @@
         "source": "/(.*)",
         "headers": [
           {
-            "key": "X-Frame-Options",
-            "value": "ALLOWALL"
+            "key": "x-vercel-set-bypass-cookie",
+            "value": "samesitenone"
           }
         ]
       }
