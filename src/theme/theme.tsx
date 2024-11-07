@@ -39,6 +39,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontSize: 16,
+          color: "#1f1f1f"
+        }
+      }
+    }
   },
 });
 
