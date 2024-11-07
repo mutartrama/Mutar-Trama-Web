@@ -1,28 +1,19 @@
 "use client";
 import { Header } from "@/components/header/Header";
-import { Hero } from "@/components/hero/Hero";
-import { HomeSectionTitle } from "@/components/home-section-title/HomeSectionTitle";
 import { getStoryblokApi } from "@/lib/storyblok";
 import { StoryblokStory } from "@storyblok/react/rsc";
 import { useEffect, useState } from "react";
-import { useLocale } from "next-intl";
 import { Box } from "@mui/material";
 
 export default function HomePage() {
   const [data, setData] = useState<any>();
-  const [locale, setLocale] = useState(
-    window.location.pathname.search("es") > 0 ? "es" : "en"
+  const [locale] = useState(
+    window.location.pathname.search("es") > 0 ? "es" : "en",
   );
-
-  console.log(window.location.pathname.search("en"), locale);
 
   useEffect(() => {
     const getData = async () => {
-      console.log(locale);
-
       const { data } = await fetchData(locale);
-      console.log(data);
-
       setData(data);
     };
 

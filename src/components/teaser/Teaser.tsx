@@ -1,4 +1,4 @@
-import { storyblokEditable } from '@storyblok/react/rsc';
+import { storyblokEditable } from "@storyblok/react/rsc";
 
 export const Teaser = ({ blok }: Record<any, any>) => {
   return (

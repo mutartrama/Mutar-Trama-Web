@@ -42,12 +42,12 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
+          textTransform: "none",
           fontSize: 16,
-          color: "#1f1f1f"
-        }
-      }
-    }
+          color: "#1f1f1f",
+        },
+      },
+    },
   },
 });
 

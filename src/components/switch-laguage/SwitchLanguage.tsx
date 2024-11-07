@@ -1,12 +1,10 @@
 "use client";
 import Icon from "../icon/Icon";
-import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@mui/material";
 import { Link } from "@/i18n/routing";
 
 export const SwitchLanguageButton = () => {
-  const pathname = usePathname();
   const t = useTranslations("LanguageSwitch");
 
   const handleLanguageSwitch = () => {

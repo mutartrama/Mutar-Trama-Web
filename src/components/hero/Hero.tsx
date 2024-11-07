@@ -1,13 +1,10 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useTranslations } from "next-intl";
 import { FlowerHeadPerson } from "./flower-head-person/FlowerHeadPerson";
 import Image from "next/image";
 import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
 import { storyblokEditable } from "@storyblok/react";
 
 export const Hero = ({ blok }: Record<any, any>) => {
-  const t = useTranslations("HomePage");
-
   return (
     <Stack
       sx={{

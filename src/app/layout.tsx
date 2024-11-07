@@ -7,10 +7,13 @@ import theme from "../theme/theme";
 
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Box } from "@mui/material";
-import { StoryblokProvider } from "@/components/storyblok-provider/StoryblokProvider";
+import { ReactNode } from "react";
+
+interface LayoutProps {
+  children: ReactNode;
+  params: Promise<any>;
+}
 
 const viaodaLibre = localFont({
   src: "../fonts/ViaodaLibre-400.ttf",
@@ -41,13 +44,7 @@ export const metadata: Metadata = {
   description: "Espacio colaborativo de artistas",
 };
 
-export default async function RootLayout({
-  children,
-  params,
-}: Readonly<{
-  children: React.ReactNode;
-  params: { locale: string };
-}>) {
+export default async function RootLayout({ children, params }: LayoutProps) {
   const { locale } = await params; // params should be awaited before using its properties.
 
   if (!routing.locales.includes(locale as any)) {
@@ -63,14 +60,14 @@ export default async function RootLayout({
         className={`${viaodaLibre.variable} ${telegraf200.variable}  ${telegraf400.variable}  ${telegraf800.variable}`}
       >
         {/* <StoryblokProvider> */}
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <NextIntlClientProvider messages={messages}>
-                {children}
-              </NextIntlClientProvider>
-            </ThemeProvider>
-          </AppRouterCacheProvider>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <NextIntlClientProvider messages={messages}>
+              {children}
+            </NextIntlClientProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
         {/* </StoryblokProvider> */}
       </body>
     </html>
