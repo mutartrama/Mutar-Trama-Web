@@ -26,6 +26,9 @@ const theme = createTheme({
       primary: "#EAEAEA",
       secondary: "#1F1F1F",
     },
+    altColors: {
+      background: "rgb(104, 86, 217)",
+    },
   },
   spacing: (factor: number) => `${factor * 0.25}rem`,
   // Compos
@@ -40,11 +43,24 @@ const theme = createTheme({
       },
     },
     MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+        disableRipple: true,
+      },
       styleOverrides: {
         root: {
           textTransform: "none",
+          borderRadius: 0,
           fontSize: 16,
-          color: "#1f1f1f",
+        },
+        text: {
+          color: "rgb(31, 31, 31)",
+        },
+        containedPrimary: {
+          color: "rgb(223, 223, 223)",
+          backgroundColor: "rgb(31, 31, 31)",
+          fontSize: 18,
+          padding: "10px 20px",
         },
       },
     },

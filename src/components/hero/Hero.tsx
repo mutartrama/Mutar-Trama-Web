@@ -7,6 +7,7 @@ import { storyblokEditable } from "@storyblok/react";
 export const Hero = ({ blok }: Record<any, any>) => {
   return (
     <Stack
+      data-cy="hero"
       sx={{
         flexDirection: { xs: "column", lg: "row" },
         bgcolor: "background.paper",
@@ -17,7 +18,7 @@ export const Hero = ({ blok }: Record<any, any>) => {
         pt: "calc(70px + 1rem)",
         justifyContent: "space-between",
         alignItems: { xs: "stretch", lg: "center" },
-        pl: { lg: "calc(160px + 1rem)" },
+        pl: { lg: "calc(120px + 1rem)", xl: "calc(160px + 1rem)" },
         position: "relative",
         overflowX: "hidden",
       }}

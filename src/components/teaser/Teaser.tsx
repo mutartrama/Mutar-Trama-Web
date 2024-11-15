@@ -1,6 +1,6 @@
 import { storyblokEditable } from "@storyblok/react/rsc";
 
-export const Teaser = ({ blok }: Record<any, any>) => {
+export const Teaser = ({ blok }: any) => {
   return (
     <h2 data-cy="teaser" {...storyblokEditable(blok)}>
       {blok.headline}
