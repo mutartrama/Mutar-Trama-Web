@@ -5,7 +5,7 @@ import { StoryblokStory } from "@storyblok/react/rsc";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { useLocalePath } from "@/hooks/useLocalePath";
-import { AnimatedTitleDesktop } from "@/components/animated-title/AnimatedTitleDesktop";
+import { AnimatedTitle } from "@/components/animated-title/AnimatedTitle";
 
 export default function HomePage() {
   const [data, setData] = useState<any>();
@@ -33,9 +33,7 @@ export default function HomePage() {
     >
       <Header bgcolor="primary.main" />
 
-      <AnimatedTitleDesktop backgroundColor="primary.main">
-        Legales
-      </AnimatedTitleDesktop>
+      <AnimatedTitle backgroundColor="primary.main">Legales</AnimatedTitle>
       <Box
         sx={{
           px: 5,

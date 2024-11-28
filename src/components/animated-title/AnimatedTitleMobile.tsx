@@ -56,8 +56,6 @@ export const AnimatedTitleMobile = ({
       data-cy="homeTitle"
       className="home-section-title"
       sx={{
-        border: "1px solid red",
-
         color: "white",
         fontSize: isPinned ? 18 : 32,
         display: "flex",
