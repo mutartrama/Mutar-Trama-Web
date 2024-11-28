@@ -11,6 +11,7 @@ import { Participate } from "@/components/participate/Participate";
 import { ParticipateDialog } from "@/components/participate/ParticipateDialog";
 import { Projects } from "@/components/projects/Projects";
 import { ProjectCard } from "@/components/projects/ProjectsCard";
+import { RichTextContent } from "@/components/rich-text-content/RichTextContent";
 import { Teaser } from "@/components/teaser/Teaser";
 import { apiPlugin, storyblokInit } from "@storyblok/react/rsc";
 
@@ -30,5 +31,6 @@ export const getStoryblokApi = storyblokInit({
     participate: Participate,
     participateDialog: ParticipateDialog,
     footer: Footer,
+    richTextContent: RichTextContent,
   },
 });

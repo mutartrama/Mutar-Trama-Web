@@ -4,7 +4,11 @@ import { MutarTramaLogo } from "./MutarTramaLogo";
 import { MenuButton } from "./MenuButton";
 import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
 
-export const Header = () => {
+interface HeaderProps {
+  bgcolor?: string;
+}
+
+export const Header = ({ bgcolor = "background.paper" }: HeaderProps) => {
   return (
     <Stack
       direction={{ xs: "row", lg: "column" }}
@@ -19,7 +23,7 @@ export const Header = () => {
         alignItems: "center",
         zIndex: 10,
         py: { lg: 5 },
-        bgcolor: "background.paper",
+        bgcolor: bgcolor,
       }}
     >
       <Box>
