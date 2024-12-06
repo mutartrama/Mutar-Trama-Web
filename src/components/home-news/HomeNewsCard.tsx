@@ -18,11 +18,27 @@ export const HomeNewsCard = ({ blok }: any) => {
         border: "none",
         pb: 5,
         px: 5,
+        maxWidth: 900,
+        height: "100%",
+        justifyContent: "center",
       }}
       {...storyblokEditable(blok)}
     >
-      <Typography variant="h2">{blok.title}</Typography>
-      <CardMedia sx={{ position: "relative", height: 230 }}>
+      <Typography
+        variant="h2"
+        sx={{
+          fontSize: { xs: 42, lg: 72 },
+        }}
+      >
+        {blok.title}
+      </Typography>
+      <CardMedia
+        sx={{
+          position: "relative",
+          width: "100%",
+          "&:before": { content: '""', display: "block", pt: "56.25%" },
+        }}
+      >
         <Image src={blok.image.filename} alt={blok.image.alt} fill></Image>
       </CardMedia>
       <Typography fontFamily="var(--font-telegraf-800)">

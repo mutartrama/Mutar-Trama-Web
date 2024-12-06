@@ -21,7 +21,11 @@ export const SwitchLanguageButton = () => {
       style={{ width: "fit-content" }}
       onClick={handleLanguageSwitch}
     >
-      <Button variant="text" startIcon={<Icon icon="arrow-right" size={20} />}>
+      <Button
+        id="switch-language"
+        variant="text"
+        startIcon={<Icon icon="arrow-right" size={20} />}
+      >
         {t("link")}
       </Button>
     </Link>

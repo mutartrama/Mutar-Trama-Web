@@ -1,0 +1,4 @@
+body {
+  overflow-x: hidden;
+  transition: background 200ms;
+}

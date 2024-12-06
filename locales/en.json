@@ -3,7 +3,18 @@
     "link": "Español",
     "to": "es"
   },
-  "HomePage": {
-    "title": "Weaving our own network of relational art"
+  "Footer": {
+    "title": "Mutar Trama.",
+    "subtitle": "From Argentina, with the world.",
+    "colaborateButton": "Collaborate",
+    "newsletterTitle": "Newsletter",
+    "newsletterText": "If you want to stay updated with the projects and initiatives we carry out, leave us your email!",
+    "newsletterInputPlaceholder": "Your email",
+    "contactUsLink": "Contact us",
+    "termsAndCoditions": "General Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "ccTitle": "(CC)** Mutar Trama 2024",
+    "ccText1": "**This platform aims to generate transdisciplinary artistic actions as a means of transformative collective sublimation towards salutogenesis.",
+    "ccText2": "By contributing your creative material to a collective work, you accept that this material becomes part of the artistic work itself and can be freely reused by the community for inspiring artistic purposes."
   }
 }

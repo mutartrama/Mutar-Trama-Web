@@ -3,7 +3,18 @@
     "link": "English",
     "to": "en"
   },
-  "HomePage": {
-    "title": "Tejiendo nuestra propia red de arte relacional"
+  "Footer": {
+    "title": "Mutar Trama.",
+    "subtitle": "Desde argentina, con el mundo.",
+    "colaborateButton": "Colaborar",
+    "newsletterTitle": "Newsletter",
+    "newsletterText": "Si querés estar el día con los proyectos e iniciativas que realizamos, dejanos tu email!",
+    "newsletterInputPlaceholder": "Tu email",
+    "contactUsLink": "Contactanos",
+    "termsAndCoditions": "Términos generales de uso",
+    "privacyPolicy": "Políticas de privacidad",
+    "ccTitle": "(CC)** Mutar Trama 2024",
+    "ccText1": "**Esta plataforma busca generar acciones transdisciplinarias artísticas, como medio de sublimación colectiva transformadora hacia la salutogénesis.",
+    "ccText2": "Al aportar tu material creativo a una obra colectiva, estas aceptando que ese material pase a pertenecer a la obra artística en sí y sea reutilizado libremente por la comunidad con fines artísticos inspiradores para otres."
   }
 }

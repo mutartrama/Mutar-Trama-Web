@@ -61,6 +61,7 @@ const theme = createTheme({
           backgroundColor: "rgb(31, 31, 31)",
           fontSize: 18,
           padding: "10px 20px",
+          lineHeight: 1.1,
         },
       },
     },

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { ThemeProvider } from "@mui/material/styles";
@@ -43,6 +43,15 @@ export const metadata: Metadata = {
   title: "Mutar Trama",
   description: "Espacio colaborativo de artistas",
 };
+
+export const viewport: Viewport = {
+  height: "device-height",
+  width: "device-width",
+  initialScale: 1.0,
+  minimumScale: 1.0,
+};
+
+// content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, target-densitydpi=device-dpi"
 
 export default async function RootLayout({ children, params }: LayoutProps) {
   const { locale } = await params; // params should be awaited before using its properties.

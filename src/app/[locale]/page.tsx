@@ -2,10 +2,9 @@
 import { Header } from "@/components/header/Header";
 import { getStoryblokApi } from "@/lib/storyblok";
 import { StoryblokStory } from "@storyblok/react/rsc";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useLocalePath } from "@/hooks/useLocalePath";
-import { animate, scroll } from "motion";
+import "./page.css";
 
 export default function HomePage() {
   const [data, setData] = useState<any>();
@@ -13,25 +12,13 @@ export default function HomePage() {
 
   const isVisible = !!data;
 
-  useLayoutEffect(() => {
-    const homeNewsContainer = document.querySelector(".home-news");
-    const homeNewsWrapper = document.querySelector(".home-news-cards");
-
-    if (data?.story && homeNewsContainer && homeNewsWrapper) {
-      const total = data.story.content.body.find(
-        (e: any) => e.component === "homeNews",
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      const totalNews = data.story.content.body.find(
+        (i: any) => i.component === "homeNews",
       ).cardList.length;
-
-      if (total) {
-        (homeNewsContainer as HTMLDivElement).style.height = `${total}00vh`;
-
-        scroll(
-          animate(homeNewsWrapper, {
-            transform: ["none", `translateX(-${total - 1}00vw)`],
-          }),
-          { target: homeNewsContainer },
-        );
-      }
+      console.log(totalNews);
     }
   }, [data]);
 
@@ -44,15 +31,11 @@ export default function HomePage() {
   }, [locale]);
 
   return (
-    <Box
-      sx={{
-        opacity: isVisible ? 1 : 0,
-        transition: "opacity 0.8s ease-in-out",
-      }}
-    >
+    <>
       <Header />
-      {data && <StoryblokStory story={data.story} />} {/* TODO: use skeleton */}
-    </Box>
+      {isVisible && <StoryblokStory story={data.story} />}{" "}
+      {/* TODO: use skeleton */}
+    </>
   );
 }
 

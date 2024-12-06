@@ -13,7 +13,7 @@ const calculatePanelWidth = () => {
   }
 };
 
-export default function HomePage() {
+export const DesktopHomepage = () => {
   const [panelWidth, setPanelWidth] = useState(calculatePanelWidth());
 
   const menuItem1 = useRef<HTMLDivElement>(null);
@@ -257,7 +257,7 @@ export default function HomePage() {
       </Box>
     </Box>
   );
-}
+};
 
 const MenuItem = () => {
   const menuItemRef = useRef<HTMLDivElement>(null);
