@@ -1,4 +1,4 @@
-import { Card, CardMedia, IconButton, Typography } from "@mui/material";
+import { Box, Card, CardMedia, IconButton, Typography } from "@mui/material";
 import Image from "next/image";
 import { storyblokEditable } from "@storyblok/react/rsc";
 import { Link } from "@/i18n/routing";
@@ -19,7 +19,7 @@ export const ProjectCard = ({ blok }: any) => {
         pb: 5,
         px: 5,
         color: "text.secondary",
-        maxWidth: 464,
+        maxWidth: { lg: 324, xl: 464 },
       }}
       {...storyblokEditable(blok)}
     >
@@ -36,18 +36,20 @@ export const ProjectCard = ({ blok }: any) => {
       <Typography
         variant="h2"
         sx={{
-          fontSize: { xs: 62, lg: 72 },
+          fontSize: { xs: 62, lg: 54, xl: 72 },
           lineHeight: 1,
         }}
       >
         {blok.title}
       </Typography>
       <Typography sx={{ opacity: 0.5 }}>{blok.subtitle}</Typography>
-      <Link href={blok.buttonLink}>
-        <IconButton>
-          <Icon icon="diagonal-arrow" size={50} />
-        </IconButton>
-      </Link>
+      <Box sx={{ display: { lg: "none" } }}>
+        <Link href={blok.buttonLink}>
+          <IconButton color="secondary">
+            <Icon icon="diagonal-arrow" size={50} />
+          </IconButton>
+        </Link>
+      </Box>
     </Card>
   );
 };

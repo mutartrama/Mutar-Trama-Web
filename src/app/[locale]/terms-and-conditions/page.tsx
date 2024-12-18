@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { useLocalePath } from "@/hooks/useLocalePath";
 import { AnimatedTitle } from "@/components/animated-title/AnimatedTitle";
+import "../page.css";
 
 export default function HomePage() {
   const [data, setData] = useState<any>();
@@ -32,15 +33,19 @@ export default function HomePage() {
       }}
     >
       <Header bgcolor="primary.main" />
-
-      <AnimatedTitle backgroundColor="primary.main">Legales</AnimatedTitle>
+      <Box sx={{ position: "fixed", zIndex: 10, top: 1, left: "120px" }}>
+        <AnimatedTitle disableBorder={true} backgroundColor="primary.main">
+          Legales
+        </AnimatedTitle>
+      </Box>
       <Box
         sx={{
           px: 5,
+          pl: "240px",
           py: 10,
         }}
       >
-        {data && <StoryblokStory story={data.story} />}{" "}
+        {data && <StoryblokStory story={data.story} />}
       </Box>
     </Box>
   );

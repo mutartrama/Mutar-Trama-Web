@@ -44,11 +44,10 @@ export const ParticipateDialog = ({ blok }: any) => {
     <Box {...storyblokEditable(blok)}>
       <Button
         variant="text"
+        size="large"
         onClick={handleClickOpen}
         endIcon={<Icon icon="plus" size={40} />}
         sx={{
-          fontSize: 32,
-          color: "text.primary",
           mb: 5,
         }}
       >

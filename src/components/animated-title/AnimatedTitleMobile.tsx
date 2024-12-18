@@ -106,19 +106,20 @@ export const AnimatedTitleMobile = ({
 
   useEffect(() => {
     const mainHeader = document.getElementById("main-header") as HTMLDivElement;
-    const svgs = mainHeader.querySelectorAll("svg");
 
     if (mainHeader) {
       mainHeader.style.backgroundColor = bgColor;
-    }
 
-    svgs.forEach((svg: SVGElement) => {
-      if (bgColor === "#1F1F1F") {
-        svg.style.filter = "invert(1)";
-      } else {
-        svg.style.filter = "invert(0)";
-      }
-    });
+      const svgs = mainHeader.querySelectorAll("svg");
+
+      svgs.forEach((svg: SVGElement) => {
+        if (bgColor === "#1F1F1F") {
+          svg.style.filter = "invert(1)";
+        } else {
+          svg.style.filter = "invert(0)";
+        }
+      });
+    }
   }, [bgColor]);
 
   return (

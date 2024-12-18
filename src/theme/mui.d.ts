@@ -9,6 +9,6 @@ declare module "@mui/material/styles/createPalette" {
   }
 
   interface PaletteOptions extends MuiPaletteOptions {
-    altColors?: { background: string };
+    altColors?: { background: string; secondaryBackgound: string };
   }
 }

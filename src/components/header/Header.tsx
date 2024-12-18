@@ -5,13 +5,17 @@ import { MenuButton } from "./MenuButton";
 import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
 
 interface HeaderProps {
+  id?: string;
   bgcolor?: string;
+  fill?: string;
 }
 
-export const Header = ({ bgcolor = "background.paper" }: HeaderProps) => {
+export const Header = ({ bgcolor, id, fill = "#1f1f1f" }: HeaderProps) => {
+  console.log(bgcolor);
+
   return (
     <Stack
-      id="main-header"
+      id={id}
       direction={{ xs: "row", lg: "column" }}
       sx={{
         height: { xs: 70, lg: "100vh" },
@@ -27,21 +31,21 @@ export const Header = ({ bgcolor = "background.paper" }: HeaderProps) => {
         bgcolor: bgcolor,
       }}
     >
-      <Box sx={{ fill: "#1f1f1f" }}>
+      <Box sx={{ fill: fill }}>
         <FlowerLogo />
       </Box>
       <Stack sx={{ display: { lg: "none", mixBlendMode: "darken" } }}>
         <MutarTramaLogo />
       </Stack>
       <Box>
-        <MenuButton />
+        <MenuButton fill={fill} />
       </Box>
 
       <Stack
         justifyContent="center"
         sx={{ display: { xs: "none", lg: "flex" } }}
       >
-        <SwitchLanguageButton />
+        <SwitchLanguageButton fill={fill} />
       </Stack>
     </Stack>
   );

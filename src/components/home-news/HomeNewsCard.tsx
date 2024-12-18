@@ -13,12 +13,12 @@ export const HomeNewsCard = ({ blok }: any) => {
         bgcolor: "transparent",
         display: "flex",
         flexDirection: "column",
-        gap: 5,
+        gap: { xs: 3, xl: 5 },
         borderRadius: 0,
         border: "none",
         pb: 5,
-        px: 5,
-        maxWidth: 900,
+        px: 20,
+        maxWidth: { lg: 800, xl: 900 },
         height: "100%",
         justifyContent: "center",
       }}
@@ -27,7 +27,7 @@ export const HomeNewsCard = ({ blok }: any) => {
       <Typography
         variant="h2"
         sx={{
-          fontSize: { xs: 42, lg: 72 },
+          fontSize: { xs: 42, lg: 54, xl: 72 },
         }}
       >
         {blok.title}
@@ -36,6 +36,7 @@ export const HomeNewsCard = ({ blok }: any) => {
         sx={{
           position: "relative",
           width: "100%",
+          maxWidth: { lg: 400, xl: 680 },
           "&:before": { content: '""', display: "block", pt: "56.25%" },
         }}
       >
@@ -48,6 +49,7 @@ export const HomeNewsCard = ({ blok }: any) => {
       <Link href={blok.buttonLink}>
         <Button
           variant="contained"
+          color="primary"
           startIcon={<Icon icon="arrow-right" size={20} />}
         >
           {blok.buttonLabel}

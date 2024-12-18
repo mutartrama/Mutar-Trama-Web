@@ -1,15 +1,9 @@
 import { Link } from "@/i18n/routing";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputBase,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { storyblokEditable } from "@storyblok/react/rsc";
 import { useTranslations } from "next-intl";
 import Icon from "../icon/Icon";
+import { NewsletterField } from "../newsletter-field/NewsletterField";
 
 export const Footer = ({ blok }: any) => {
   const t = useTranslations("Footer");
@@ -28,7 +22,7 @@ export const Footer = ({ blok }: any) => {
         backgroundImage: 'url("./images/deco_echo.png")',
         backgroundRepeat: "no-repeat",
         backgroundPosition: {
-          xs: "top 30% right",
+          xs: "top -10% left",
           lg: "top 20% right 10%",
           xl: "top 20% right 20%",
         },
@@ -63,6 +57,10 @@ export const Footer = ({ blok }: any) => {
           </Typography>
           <Box>
             <Button
+              LinkComponent={Link}
+              href="https://buymeacoffee.com/mutar.trama_artcollective"
+              target="_blank"
+              rel="noopener noreferrer"
               startIcon={<Icon icon="arrow-right" size={20} />}
               variant="contained"
               sx={{
@@ -85,68 +83,39 @@ export const Footer = ({ blok }: any) => {
             {t("newsletterTitle")}
           </Typography>
           <Typography>{t("newsletterText")}</Typography>
-          <Stack
-            direction="row"
-            sx={{
-              bgcolor: "background.default",
-              width: 220,
-              height: 32,
-              border: "1px solid #DFDFDF",
-            }}
-          >
-            <InputBase
-              placeholder={t("newsletterInputPlaceholder")}
-              sx={{ color: "text.primary", px: 2 }}
-            />
-            <IconButton
-              sx={{
-                color: "text.secondary",
-                bgcolor: "background.paper",
-                borderRadius: 0,
-                padding: 1,
-                "&:hover, &:focus, &:active": {
-                  bgcolor: "background.paper",
-                  color: "primary.main",
-                },
-              }}
-            >
-              <Icon icon="send" size={24} style={{ opacity: 0.5 }} />
-            </IconButton>
-          </Stack>
+
+          <NewsletterField onSubmit={() => {}} isSubmited={false} />
         </Stack>
         <Stack direction="column" gap={1}>
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Stack
-              direction="row"
-              component="span"
-              alignItems="center"
-              gap={1}
-              sx={{ color: "text.primary" }}
+          <Link
+            href="mailto:mutar.trama@gmail.com"
+            style={{ textDecoration: "none" }}
+          >
+            <Button
+              variant="text"
+              color="secondary"
+              startIcon={<Icon icon="arrow-right" size={20} />}
             >
-              <Icon icon="arrow-right" size={20} /> {t("contactUsLink")}
-            </Stack>
+              {t("contactUsLink")}
+            </Button>
           </Link>
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Stack
-              direction="row"
-              component="span"
-              alignItems="center"
-              gap={1}
-              sx={{ color: "text.primary" }}
+          <Link href="/terms-and-conditions" style={{ textDecoration: "none" }}>
+            <Button
+              variant="text"
+              color="secondary"
+              startIcon={<Icon icon="arrow-right" size={20} />}
             >
-              <Icon icon="arrow-right" size={20} /> {t("termsAndCoditions")}
-            </Stack>
+              {t("termsAndCoditions")}
+            </Button>
           </Link>
-          <Link href="/" style={{ textDecoration: "none" }}>
-            <Stack
-              direction="row"
-              component="span"
-              alignItems="center"
-              gap={1}
-              sx={{ color: "text.primary" }}
+          <Link href="/privacy-policy" style={{ textDecoration: "none" }}>
+            <Button
+              variant="text"
+              color="secondary"
+              startIcon={<Icon icon="arrow-right" size={20} />}
             >
-              <Icon icon="arrow-right" size={20} /> {t("privacyPolicy")}
-            </Stack>
+              {t("privacyPolicy")}
+            </Button>
           </Link>
         </Stack>
         <Stack direction="column" gap={4} pb={4}>
@@ -155,6 +124,7 @@ export const Footer = ({ blok }: any) => {
           <Typography sx={{ fontSize: 12 }}>{t("ccText2")}</Typography>
         </Stack>
       </Stack>
+      <Box id="footer-menu" />
     </Box>
   );
 };

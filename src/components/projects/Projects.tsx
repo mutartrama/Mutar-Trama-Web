@@ -30,13 +30,14 @@ export const Projects = ({ blok }: any) => {
 
   return (
     <Box
+      id="projects"
       className="projects-section"
       ref={newsSection}
       sx={{
         width: "100vw",
         position: "relative",
         height: `${panelCount * 100}vh`,
-        pl: { lg: "420px" },
+        pl: { lg: "290px", xl: "420px" },
         bgcolor: "background.paper",
       }}
     >

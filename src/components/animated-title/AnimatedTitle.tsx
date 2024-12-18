@@ -1,7 +1,7 @@
 import { useMediaQuery, useTheme } from "@mui/material";
 import { PropsWithChildren } from "react";
-import { AnimatedTitleDesktop } from "./AnimatedTitleDesktop";
 import { AnimatedTitleMobile } from "./AnimatedTitleMobile";
+import { AnimatedTitleDesktopV2 } from "./AnimatedTitleDesktopV2";
 
 interface AnimatedTitleProps {
   backgroundColor: string;
@@ -16,7 +16,9 @@ export const AnimatedTitle = ({
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   if (isLargeScreen) {
-    return <AnimatedTitleDesktop {...props}>{children}</AnimatedTitleDesktop>;
+    return (
+      <AnimatedTitleDesktopV2 {...props}>{children}</AnimatedTitleDesktopV2>
+    );
   } else {
     return <AnimatedTitleMobile {...props}>{children}</AnimatedTitleMobile>;
   }

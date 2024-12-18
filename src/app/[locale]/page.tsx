@@ -13,16 +13,6 @@ export default function HomePage() {
   const isVisible = !!data;
 
   useEffect(() => {
-    if (data) {
-      console.log(data);
-      const totalNews = data.story.content.body.find(
-        (i: any) => i.component === "homeNews",
-      ).cardList.length;
-      console.log(totalNews);
-    }
-  }, [data]);
-
-  useEffect(() => {
     const getData = async () => {
       const { data } = await fetchData(locale);
       setData(data);
@@ -30,11 +20,21 @@ export default function HomePage() {
     getData();
   }, [locale]);
 
+  useEffect(() => {
+    if (isVisible && window.location.hash === "#footer-menu") {
+      setTimeout(() => {
+        const footerElement = document.getElementById("footer-menu");
+        if (footerElement) {
+          footerElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  }, [isVisible]);
+
   return (
     <>
-      <Header />
-      {isVisible && <StoryblokStory story={data.story} />}{" "}
-      {/* TODO: use skeleton */}
+      <Header id="main-header" />
+      {isVisible && <StoryblokStory story={data.story} />}
     </>
   );
 }

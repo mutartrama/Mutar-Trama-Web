@@ -4,7 +4,13 @@ import { useTranslations } from "next-intl";
 import { Button } from "@mui/material";
 import { Link } from "@/i18n/routing";
 
-export const SwitchLanguageButton = () => {
+interface SwitchLanguageButtonProps {
+  fill?: string;
+}
+
+export const SwitchLanguageButton = ({
+  fill = "text.secondary",
+}: SwitchLanguageButtonProps) => {
   const t = useTranslations("LanguageSwitch");
 
   const handleLanguageSwitch = () => {
@@ -20,11 +26,13 @@ export const SwitchLanguageButton = () => {
       locale={t("to")}
       style={{ width: "fit-content" }}
       onClick={handleLanguageSwitch}
+      className="noSelect"
     >
       <Button
         id="switch-language"
         variant="text"
         startIcon={<Icon icon="arrow-right" size={20} />}
+        sx={{ color: fill }}
       >
         {t("link")}
       </Button>
