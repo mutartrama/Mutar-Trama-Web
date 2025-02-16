@@ -4,12 +4,63 @@ import { storyblokEditable } from "@storyblok/react/rsc";
 import { useTranslations } from "next-intl";
 import Icon from "../icon/Icon";
 import { NewsletterField } from "../newsletter-field/NewsletterField";
+import { useEffect, useRef } from "react";
+import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
+import { scroll, animate } from "motion";
 
 export const Footer = ({ blok }: any) => {
   const t = useTranslations("Footer");
 
+  const contentRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { isLoaded, pageWrapperRef, toggleMenuOpen } =
+    useGlobalNavigationLayout();
+
+  useEffect(() => {
+    if (isLoaded && contentRef.current && pageWrapperRef?.current) {
+      scroll(
+        animate(
+          contentRef.current as HTMLElement,
+          {
+            opacity: [0, 1],
+            transform: ["translateY(300px)", "translateY(0)"],
+          },
+          { duration: 1 },
+        ),
+        {
+          target: contentRef.current, // El elemento específico que queremos animar
+          container: pageWrapperRef.current as HTMLElement,
+          offset: ["start end", "end end"],
+        },
+      );
+    }
+  }, [isLoaded, contentRef, pageWrapperRef]);
+
+  useEffect(() => {
+    if (containerRef.current && pageWrapperRef?.current) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            toggleMenuOpen(true);
+          } else {
+            toggleMenuOpen(false);
+          }
+        },
+        {
+          root: pageWrapperRef.current,
+          threshold: 1,
+        },
+      );
+
+      observer.observe(containerRef.current);
+    }
+  }, [containerRef, pageWrapperRef, toggleMenuOpen]);
+
   return (
     <Box
+      ref={containerRef}
+      className="footer-section"
       sx={{
         minHeight: "100vh",
         display: "flex",
@@ -19,6 +70,7 @@ export const Footer = ({ blok }: any) => {
         px: 5,
         pl: { lg: "calc(120px + 75px * 4 + 2rem)", xl: "calc(160px + 1rem)" },
         pt: 24,
+        bgcolor: "background.default",
         backgroundImage: 'url("./images/deco_echo.png")',
         backgroundRepeat: "no-repeat",
         backgroundPosition: {
@@ -31,6 +83,7 @@ export const Footer = ({ blok }: any) => {
       {...storyblokEditable(blok)}
     >
       <Stack
+        ref={contentRef}
         direction="column"
         gap={8}
         sx={{

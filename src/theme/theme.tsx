@@ -109,7 +109,7 @@ const theme = createTheme({
         textSecondary: {
           color: "rgb(223, 223, 223)",
           "&:hover": {
-            color: "rgb(223, 223, 223)",
+            color: "rgb(205, 117, 117)",
           },
           "&:disabled": {
             color: "rgba(223, 223, 223, 0.3)",
@@ -137,9 +137,12 @@ const theme = createTheme({
         colorPrimary: {
           backgroundColor: "rgb(31, 31, 31)",
           color: "rgb(223, 223, 223)",
-          "&:hover": {
+          "&:hover, &:focus": {
             backgroundColor: "rgb(205, 117, 117)",
-            color: "rgb(234, 234, 234)",
+            color: "rgb(223, 223, 223)",
+            "&:hover svg": {
+              fill: `rgb(205, 117, 117) !important`,
+            },
           },
           "&:disabled": {
             backgroundColor: "rgb(31, 31, 31)",
@@ -151,7 +154,7 @@ const theme = createTheme({
           color: "rgb(31, 31, 31)",
           "&:hover": {
             backgroundColor: "rgb(205, 117, 117)",
-            color: "rgb(13, 13, 13)",
+            color: "rgb(223, 223, 223)",
           },
           "&:disabled": {
             backgroundColor: "rgb(223, 223, 223)",

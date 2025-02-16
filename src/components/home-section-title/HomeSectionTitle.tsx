@@ -7,6 +7,7 @@ export const HomeSectionTitle = ({ blok }: PropsWithChildren<any>) => {
     <AnimatedTitle
       backgroundColor={blok.backgroundColor}
       to={blok.to}
+      indexPosition={blok.index}
       {...storyblokEditable(blok)}
     >
       {blok.title}

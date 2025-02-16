@@ -4,11 +4,14 @@ import { getStoryblokApi } from "@/lib/storyblok";
 import { StoryblokStory } from "@storyblok/react/rsc";
 import { useEffect, useState } from "react";
 import { useLocalePath } from "@/hooks/useLocalePath";
+import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 import "./page.css";
 
 export default function HomePage() {
   const [data, setData] = useState<any>();
   const locale = useLocalePath();
+
+  const { hasLoadedData } = useGlobalNavigationLayout();
 
   const isVisible = !!data;
 
@@ -16,20 +19,10 @@ export default function HomePage() {
     const getData = async () => {
       const { data } = await fetchData(locale);
       setData(data);
+      hasLoadedData(!!data);
     };
     getData();
-  }, [locale]);
-
-  useEffect(() => {
-    if (isVisible && window.location.hash === "#footer-menu") {
-      setTimeout(() => {
-        const footerElement = document.getElementById("footer-menu");
-        if (footerElement) {
-          footerElement.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
-    }
-  }, [isVisible]);
+  }, [locale, hasLoadedData]);
 
   return (
     <>

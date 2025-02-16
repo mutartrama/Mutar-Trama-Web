@@ -28,11 +28,11 @@ export default function HomePage() {
         opacity: isVisible ? 1 : 0,
         transition: "opacity 0.8s ease-in-out",
         pt: { xs: "75px", lg: 0 },
-        bgcolor: "secondary.main",
+        bgcolor: "primary.main",
         pb: 10,
       }}
     >
-      <Header bgcolor="secondary.main" fill="#DFDFDF" />
+      <Header bgcolor="primary.main" fill="#DFDFDF" />
       <Box
         sx={{
           position: "fixed",
@@ -52,7 +52,7 @@ export default function HomePage() {
             alignItems: "center",
             gap: 2,
             position: "sticky",
-            bgcolor: "secondary.main",
+            bgcolor: "primary.main",
             color: "#DFDFDF",
             px: 4,
             py: 2,
@@ -84,7 +84,11 @@ export default function HomePage() {
           display: { xs: "none", lg: "block" },
         }}
       >
-        <AnimatedTitle disableBorder={true} backgroundColor="secondary.main">
+        <AnimatedTitle
+          disableBorder={true}
+          backgroundColor="primary.main"
+          indexPosition={0}
+        >
           Legales
         </AnimatedTitle>
       </Box>

@@ -4,10 +4,13 @@ import { ProjectCard } from "./ProjectsCard";
 
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
+import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 
 export const Projects = ({ blok }: any) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const { isLoaded, pageWrapperRef } = useGlobalNavigationLayout();
 
   const newsList = useRef<HTMLDivElement>(null);
   const newsSection = useRef<HTMLDivElement>(null);
@@ -15,7 +18,7 @@ export const Projects = ({ blok }: any) => {
   const panelCount = blok.cardList.length - 1;
 
   useEffect(() => {
-    if (newsList.current && newsSection.current) {
+    if (newsList.current && newsSection.current && pageWrapperRef?.current) {
       scroll(
         animate(newsList.current as any, {
           transform: [
@@ -23,10 +26,32 @@ export const Projects = ({ blok }: any) => {
             `translateX(-${panelCount * (isLargeScreen ? 50 : 100)}vw )`,
           ],
         }),
-        { target: newsSection.current },
+        {
+          target: newsSection.current,
+          container: pageWrapperRef.current as HTMLElement,
+        },
       );
     }
-  }, [isLargeScreen, panelCount]);
+  }, [isLargeScreen, pageWrapperRef, panelCount]);
+
+  useEffect(() => {
+    if (isLoaded && newsSection.current && pageWrapperRef) {
+      scroll(
+        animate(
+          newsSection.current as HTMLElement,
+          {
+            opacity: [0, 1],
+          },
+          { duration: 1 },
+        ),
+        {
+          target: newsSection.current, // El elemento específico que queremos animar
+          container: pageWrapperRef.current as HTMLElement,
+          offset: ["start end", "start 10%"],
+        },
+      );
+    }
+  }, [isLoaded, newsSection, pageWrapperRef]);
 
   return (
     <Box

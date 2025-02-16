@@ -26,13 +26,15 @@ export const SwitchLanguageButton = ({
       locale={t("to")}
       style={{ width: "fit-content" }}
       onClick={handleLanguageSwitch}
-      className="noSelect"
+      className="switch-lang"
     >
       <Button
         id="switch-language"
         variant="text"
         startIcon={<Icon icon="arrow-right" size={20} />}
-        sx={{ color: fill }}
+        sx={{
+          color: fill,
+        }}
       >
         {t("link")}
       </Button>

@@ -1,5 +1,6 @@
 "use client";
 
+import { MenuButton } from "@/components/header/MenuButton";
 import Icon from "@/components/icon/Icon";
 import { NewsletterField } from "@/components/newsletter-field/NewsletterField";
 import { Box, Button, IconButton } from "@mui/material";
@@ -28,6 +29,20 @@ export default function HomePage() {
 
   return (
     <Box sx={{ bgcolor: "blue", width: "99vw", overflowX: "hidden" }}>
+      <Box
+        sx={{
+          bgcolor: "white",
+          display: "flex",
+          gap: 5,
+          p: 10,
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
+        }}
+      >
+        <MenuButton />
+        <Icon icon="menu" size={40} color="#121212" />
+      </Box>
+
       <Box
         sx={{
           bgcolor: "#323232",

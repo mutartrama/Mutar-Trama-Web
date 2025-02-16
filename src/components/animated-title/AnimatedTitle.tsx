@@ -5,11 +5,14 @@ import { AnimatedTitleDesktopV2 } from "./AnimatedTitleDesktopV2";
 
 interface AnimatedTitleProps {
   backgroundColor: string;
+  indexPosition: string | number;
   [x: string]: any;
 }
 
 export const AnimatedTitle = ({
   children,
+  indexPosition,
+  backgroundColor,
   ...props
 }: PropsWithChildren<AnimatedTitleProps>) => {
   const theme = useTheme();
@@ -17,9 +20,23 @@ export const AnimatedTitle = ({
 
   if (isLargeScreen) {
     return (
-      <AnimatedTitleDesktopV2 {...props}>{children}</AnimatedTitleDesktopV2>
+      <AnimatedTitleDesktopV2
+        defaultBackgroundColor={backgroundColor}
+        indexPosition={Number(indexPosition)}
+        {...props}
+      >
+        {children}
+      </AnimatedTitleDesktopV2>
     );
   } else {
-    return <AnimatedTitleMobile {...props}>{children}</AnimatedTitleMobile>;
+    return (
+      <AnimatedTitleMobile
+        defaultBackgroundColor={backgroundColor}
+        indexPosition={Number(indexPosition)}
+        {...props}
+      >
+        {children}
+      </AnimatedTitleMobile>
+    );
   }
 };

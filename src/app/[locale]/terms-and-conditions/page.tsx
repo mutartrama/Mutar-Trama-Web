@@ -5,8 +5,7 @@ import { StoryblokStory } from "@storyblok/react/rsc";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { useLocalePath } from "@/hooks/useLocalePath";
-import { AnimatedTitle } from "@/components/animated-title/AnimatedTitle";
-import "../page.css";
+import { LegalsTitle } from "@/components/legals-title/legals-title";
 
 export default function HomePage() {
   const [data, setData] = useState<any>();
@@ -27,21 +26,17 @@ export default function HomePage() {
       sx={{
         opacity: isVisible ? 1 : 0,
         transition: "opacity 0.8s ease-in-out",
-        pt: "75px",
+        pt: "70px",
         bgcolor: "primary.main",
         pb: 10,
       }}
     >
-      <Header bgcolor="primary.main" />
-      <Box sx={{ position: "fixed", zIndex: 10, top: 1, left: "120px" }}>
-        <AnimatedTitle disableBorder={true} backgroundColor="primary.main">
-          Legales
-        </AnimatedTitle>
-      </Box>
+      <Header bgcolor="primary.main" fill="#DFDFDF" />
+      <LegalsTitle />
       <Box
         sx={{
           px: 5,
-          pl: "240px",
+          pl: { lg: "240px" },
           py: 10,
         }}
       >

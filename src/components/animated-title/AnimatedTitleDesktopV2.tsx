@@ -1,159 +1,204 @@
 import { Box, Typography } from "@mui/material";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useRef } from "react";
 import Icon from "../icon/Icon";
 import { Link } from "@/i18n/routing";
+import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
+import { animate } from "motion";
 
 interface AnimatedTitleProps {
-  backgroundColor: string;
+  defaultBackgroundColor: string;
+  indexPosition: number;
   [x: string]: any;
 }
 
 export const AnimatedTitleDesktopV2 = ({
   children,
-  backgroundColor,
+  defaultBackgroundColor,
   to,
-  disableBorder,
+  indexPosition,
   ...props
 }: PropsWithChildren<AnimatedTitleProps>) => {
+  const { isLoaded, lastPinnedIndex, backgroundColor } =
+    useGlobalNavigationLayout();
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
-  const [isPinned, setIsPinned] = useState(false);
-  const [bgColor, setBgColor] = useState<string>("#DFDFDF");
-  const [isAtBottom, setIsAtBottom] = useState(false);
+
+  // useEffect(() => {
+  //   const updatePositions = () => {
+  //     const pageContainer = document.querySelector(
+  //       ".page-container",
+  //     ) as HTMLElement;
+  //     const titles = document.querySelectorAll(".home-section-title");
+
+  //     const newsSection = document.querySelector(".news-section");
+  //     const aboutNetSection = document.querySelector(".about-net-section");
+  //     const projectsSection = document.querySelector(".projects-section");
+  //     const participateSection = document.querySelector(".participate-section");
+
+  //     if (
+  //       newsSection &&
+  //       aboutNetSection &&
+  //       projectsSection &&
+  //       participateSection
+  //     ) {
+  //       const newsSectionRectTop = newsSection.getBoundingClientRect().top;
+  //       const aboutNetSectionRectTop =
+  //         aboutNetSection.getBoundingClientRect().top;
+  //       const projectsSectionRectTop =
+  //         projectsSection.getBoundingClientRect().top;
+  //       const participateSectionRectTop =
+  //         participateSection.getBoundingClientRect().top;
+
+  //       const tops = [
+  //         newsSectionRectTop,
+  //         aboutNetSectionRectTop,
+  //         projectsSectionRectTop,
+  //         participateSectionRectTop,
+  //       ];
+
+  //       titles.forEach((title, index) => {
+  //         (title as HTMLDivElement).style.top = `${tops[index]}px`;
+  //         (title as HTMLDivElement).style.height =
+  //           `${pageContainer.scrollHeight - tops[index]}px`;
+  //       });
+  //     }
+  //   };
+
+  //   // Inicializa las posiciones
+  //   updatePositions();
+
+  //   // Agrega el manejador de eventos resize
+  //   window.addEventListener("resize", updatePositions);
+
+  //   // Limpia el evento al desmontar el componente
+  //   return () => {
+  //     window.removeEventListener("resize", updatePositions);
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   const pageContainer = document.querySelector(
+  //     ".page-container",
+  //   ) as HTMLElement;
+  //   const handleScroll = () => {
+  //     const titles = Array.from(
+  //       document.querySelectorAll(
+  //         ".home-section-title > [data-cy='homeTitle']",
+  //       ),
+  //     );
+
+  //     let temporalLastIndex = -1;
+
+  //     titles.forEach((title, index) => {
+  //       const rect = title.getBoundingClientRect();
+  //       // Detecta si el título sticky está en la posición "pinneada"
+
+  //       if (Math.round(rect.top) === 0) {
+  //         // setLastPinnedIndex(index);
+  //         temporalLastIndex = index;
+  //       }
+  //     });
+
+  //     setLastPinnedIndex(temporalLastIndex);
+
+  //     if (titleRef.current) {
+  //       const topPosition = titleRef.current.getBoundingClientRect().top;
+  //       const stickyTop =
+  //         parseFloat((titleRef.current as HTMLHeadingElement).style.top) || 0;
+
+  //       setIsPinned(topPosition <= stickyTop);
+  //     }
+  //   };
+
+  //   pageContainer.addEventListener("scroll", handleScroll);
+
+  //   return () => {
+  //     pageContainer.removeEventListener("scroll", handleScroll);
+  //   };
+
+  //   // eslint-disable-next-line
+  // }, []);
+
+  // useEffect(() => {
+  //   const colors = ["#DFDFDF", "#6856D9", "#1F1F1F", "#DFDFDF", "#1F1F1F"];
+  //   const titles = Array.from(
+  //     document.querySelectorAll(".home-section-title > [data-cy='homeTitle']"),
+  //   );
+
+  //   titles.forEach((_, i) => {
+  //     if (lastPinnedIndex > -1 && i <= lastPinnedIndex) {
+  //       updateBackgroundColor(colors[lastPinnedIndex + 1]);
+  //     } else {
+  //       if (lastPinnedIndex === -1) {
+  //         updateBackgroundColor(colors[0]);
+  //       }
+  //     }
+  //   });
+
+  //   // eslint-disable-next-line
+  // }, [lastPinnedIndex]);
+
+  // useEffect(() => {
+  //   const titles = Array.from(
+  //     document.querySelectorAll(".home-section-title > [data-cy='homeTitle']"),
+  //   );
+
+  //   titles.forEach((t, i) => {
+  //     const title = t as HTMLHeadingElement;
+  //     if (lastPinnedIndex > -1 && i <= lastPinnedIndex) {
+  //       title.style.backgroundColor = backgroundColor;
+  //       title.style.color = lastPinnedIndex === 2 ? "#1F1F1F" : "#DFDFDF";
+  //       title.style.borderRight = disableBorder
+  //         ? ""
+  //         : `1px solid ${lastPinnedIndex === 2 ? "#1F1F1F" : "#DFDFDF"}`;
+  //     } else {
+  //       title.style.borderRight = "1px solid transparent";
+  //     }
+  //   });
+
+  //   // eslint-disable-next-line
+  // }, [backgroundColor]);
+
+  // useEffect(() => {
+  //   const mainHeader = document.getElementById("main-header") as HTMLDivElement;
+  //   const switchLanguage = document.getElementById(
+  //     "switch-language",
+  //   ) as HTMLDivElement;
+
+  //   if (mainHeader) {
+  //     mainHeader.style.backgroundColor = backgroundColor;
+
+  //     const svgs = mainHeader.querySelectorAll("svg");
+
+  //     svgs.forEach((svg: SVGElement) => {
+  //       if (backgroundColor === "#1F1F1F" || backgroundColor === "#6856D9") {
+  //         svg.style.fill = "#DFDFDF";
+  //         switchLanguage.style.color = "#DFDFDF";
+  //       } else {
+  //         svg.style.fill = "#1F1F1F";
+  //         switchLanguage.style.color = "#1F1F1F";
+  //       }
+  //     });
+  //   }
+  // }, [backgroundColor]);
 
   useEffect(() => {
-    const updatePositions = () => {
-      const titles = document.querySelectorAll(".home-section-title");
-
-      const newsSection = document.querySelector(".news-section");
-      const aboutNetSection = document.querySelector(".about-net-section");
-      const projectsSection = document.querySelector(".projects-section");
-      const participateSection = document.querySelector(".participate-section");
-
-      if (
-        newsSection &&
-        aboutNetSection &&
-        projectsSection &&
-        participateSection
-      ) {
-        const newsSectionRectTop = newsSection.getBoundingClientRect().top;
-        const aboutNetSectionRectTop =
-          aboutNetSection.getBoundingClientRect().top;
-        const projectsSectionRectTop =
-          projectsSection.getBoundingClientRect().top;
-        const participateSectionRectTop =
-          participateSection.getBoundingClientRect().top;
-
-        const tops = [
-          newsSectionRectTop,
-          aboutNetSectionRectTop,
-          projectsSectionRectTop,
-          participateSectionRectTop,
-        ];
-
-        titles.forEach((title, index) => {
-          (title as HTMLDivElement).style.top = `${tops[index]}px`;
-          (title as HTMLDivElement).style.height =
-            `${document.documentElement.scrollHeight - tops[index]}px`;
-        });
-      }
-    };
-
-    // Inicializa las posiciones
-    updatePositions();
-
-    // Agrega el manejador de eventos resize
-    window.addEventListener("resize", updatePositions);
-
-    // Limpia el evento al desmontar el componente
-    return () => {
-      window.removeEventListener("resize", updatePositions);
-    };
-  }, []);
-
-  useEffect(() => {
-    const colors = ["#DFDFDF", "#6856D9", "#1F1F1F", "#DFDFDF", "#1F1F1F"];
-    const handleScroll = () => {
-      const titles = Array.from(
-        document.querySelectorAll(
-          ".home-section-title > [data-cy='homeTitle']",
-        ),
-      );
-      let lastPinnedIndex = -1;
-
-      titles.forEach((title, index) => {
-        const rect = title.getBoundingClientRect();
-
-        // Detecta si el título sticky está en la posición "pinneada"
-        if (rect.top === 0) {
-          lastPinnedIndex = index; // Actualiza con el índice más reciente
-        }
-      });
-
-      titles.forEach((t, i) => {
-        const title = t as HTMLHeadingElement;
-        if (lastPinnedIndex > -1 && i <= lastPinnedIndex) {
-          title.style.backgroundColor = colors[lastPinnedIndex + 1];
-          title.style.color = lastPinnedIndex === 2 ? "#1F1F1F" : "#DFDFDF";
-          title.style.borderRight = disableBorder
-            ? ""
-            : `1px solid ${lastPinnedIndex === 2 ? "#1F1F1F" : "#DFDFDF"}`;
-          setBgColor(colors[lastPinnedIndex + 1]);
-        } else {
-          title.style.borderRight = "1px solid transparent";
-          if (lastPinnedIndex === -1) {
-            setBgColor(colors[0]);
-          }
-        }
-      });
-
-      if (titleRef.current) {
-        const topPosition = titleRef.current.getBoundingClientRect().top;
-        const stickyTop =
-          parseFloat((titleRef.current as HTMLHeadingElement).style.top) || 0;
-
-        setIsPinned(topPosition <= stickyTop);
-      }
-
-      const documentHeight = document.documentElement.scrollHeight;
-      const viewportHeight = window.innerHeight;
-      const scrollPosition = window.scrollY;
-
-      const atBottom = scrollPosition + viewportHeight >= documentHeight;
-      setIsAtBottom(atBottom);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    const mainHeader = document.getElementById("main-header") as HTMLDivElement;
-    const switchLanguage = document.getElementById(
-      "switch-language",
-    ) as HTMLDivElement;
-
-    if (mainHeader) {
-      mainHeader.style.backgroundColor = bgColor;
-
-      const svgs = mainHeader.querySelectorAll("svg");
-
-      svgs.forEach((svg: SVGElement) => {
-        if (bgColor === "#1F1F1F") {
-          svg.style.fill = "#DFDFDF";
-          switchLanguage.style.color = "#DFDFDF";
-        } else {
-          svg.style.fill = "#1F1F1F";
-          switchLanguage.style.color = "#1F1F1F";
-        }
-      });
+    if (isLoaded && containerRef.current) {
+      animate(containerRef.current, { opacity: 1, animationDuration: 1 });
     }
-  }, [bgColor]);
+  }, [isLoaded]);
+
+  const asterikHandler = Number(indexPosition) === lastPinnedIndex;
+
+  // const isPinned = useMemo(
+  //   () => indexPosition < lastPinnedIndex,
+  //   [indexPosition, lastPinnedIndex],
+  // );
+  const isAtBottom = useMemo(() => lastPinnedIndex === 4, [lastPinnedIndex]);
+
+  // console.log(isPinned, isAtBottom)
+  const bgColor = backgroundColor ? backgroundColor : defaultBackgroundColor;
+  const fgColor = bgColor === "#DFDFDF" ? "#1F1F1F" : "#DFDFDF";
 
   return (
     <Box
@@ -163,29 +208,29 @@ export const AnimatedTitleDesktopV2 = ({
         position: "absolute",
         // height: `${documentHeight}px`,
         zIndex: 10,
+        opacity: 0,
       }}
     >
       <Typography
         ref={titleRef}
         data-cy="homeTitle"
         sx={{
-          color: "white",
           fontSize: 32,
           position: "sticky",
           zIndex: 5,
-          bgcolor: backgroundColor,
+          bgcolor: bgColor,
+          color: fgColor,
           px: 4,
           py: 2,
           pb: 6,
           height: "100vh",
           width: "75px",
-          transition: "fontSize 100ms",
+          transition: "fontSize 300ms, background 900ms, color 300ms",
           top: 0,
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
           border: "1px solid transparent",
-          transitionDelay: ".25s",
         }}
         {...props}
       >
@@ -209,10 +254,9 @@ export const AnimatedTitleDesktopV2 = ({
               sx={{
                 display: "flex",
                 alignItems: "center",
-                width: isAtBottom && !disableBorder ? 32 : isPinned ? 0 : 40,
-                transform: `scale(${isPinned && !isAtBottom ? 0 : 1})`,
+                width: isAtBottom ? 32 : !asterikHandler ? 0 : 40,
+                transform: `scale(${isAtBottom ? 1 : !asterikHandler ? 0 : 1})`,
                 transition: "all 100ms",
-                transitionDelay: ".25s",
               }}
             >
               <Icon icon="asterisk" size={40} color="inherit" />

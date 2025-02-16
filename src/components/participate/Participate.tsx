@@ -3,9 +3,36 @@ import { Box, Stack, Typography } from "@mui/material";
 import { storyblokEditable } from "@storyblok/react/rsc";
 import { richTextResolver } from "@storyblok/richtext";
 import { ParticipateDialog } from "./ParticipateDialog";
+import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
+import { useEffect, useRef } from "react";
+import { animate, scroll } from "motion";
 
 export const Participate = ({ blok }: any) => {
   const { render } = richTextResolver();
+
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const { isLoaded, pageWrapperRef } = useGlobalNavigationLayout();
+
+  useEffect(() => {
+    if (isLoaded && contentRef.current && pageWrapperRef?.current) {
+      scroll(
+        animate(
+          contentRef.current as HTMLElement,
+          {
+            opacity: [0, 1],
+            transform: ["translateY(300px)", "translateY(0)"],
+          },
+          { duration: 1 },
+        ),
+        {
+          target: contentRef.current, // El elemento específico que queremos animar
+          container: pageWrapperRef.current as HTMLElement,
+          offset: ["start end", "end end"],
+        },
+      );
+    }
+  }, [isLoaded, contentRef, pageWrapperRef]);
 
   return (
     <Box
@@ -14,14 +41,13 @@ export const Participate = ({ blok }: any) => {
       data-cy="participate"
       {...storyblokEditable(blok)}
       sx={{
-        height: "200vh",
         position: "relative",
+        bgcolor: "background.default",
       }}
     >
       <Box
+        ref={contentRef}
         sx={{
-          position: "sticky",
-          top: 0,
           px: 5,
           pt: 30,
           pl: { lg: "calc(120px + 75px * 4 + 2rem)", xl: "calc(160px + 1rem)" },

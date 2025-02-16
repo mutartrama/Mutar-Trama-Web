@@ -1,161 +1,92 @@
-import { Box, Typography } from "@mui/material";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { Typography } from "@mui/material";
+import { PropsWithChildren, useMemo } from "react";
 import Icon from "../icon/Icon";
+import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
+import { motion } from "framer-motion";
 
 interface AnimatedTitleProps {
-  backgroundColor: string;
+  defaultBackgroundColor: string;
+  indexPosition: number;
   [x: string]: any;
 }
 
 export const AnimatedTitleMobile = ({
   children,
-  backgroundColor,
+  indexPosition,
+  defaultBackgroundColor,
   ...props
 }: PropsWithChildren<AnimatedTitleProps>) => {
-  const titleRef = useRef<HTMLParagraphElement>(null);
-  const [isPinned, setIsPinned] = useState(false);
-  const [bgColor, setBgColor] = useState<string>("#DFDFDF");
-  const [isAtBottom, setIsAtBottom] = useState(false);
+  const { lastPinnedIndex, backgroundColor } = useGlobalNavigationLayout();
 
-  useEffect(() => {
-    const colors = ["#DFDFDF", "#6856D9", "#1F1F1F", "#DFDFDF", "#1F1F1F"];
-    const titles = document.querySelectorAll(".home-section-title");
+  const isPinned = useMemo(
+    () => indexPosition < lastPinnedIndex,
+    [indexPosition, lastPinnedIndex],
+  );
+  const isAtBottom = useMemo(() => lastPinnedIndex === 4, [lastPinnedIndex]);
 
-    const stickyPoints = Array.from(titles).map(
-      (_, index) => (index === 0 ? 69 : 69 + 41 * index), // Ajustamos con el -1px según el índice
-    );
-
-    titles.forEach((title, index) => {
-      const position = index + 1;
-      const titleElement = title as HTMLHeadingElement;
-
-      if (position === 1) {
-        titleElement.style.top = "69px";
-      } else {
-        titleElement.style.top = `${(position - 1) * 41 + 69}px`;
-      }
-    });
-
-    const handleScroll = () => {
-      let lastPinnedIndex = -1;
-      let pinnedIndex = -1;
-      let isAnyPinned = false;
-
-      if (titleRef.current) {
-        const topPosition = titleRef.current.getBoundingClientRect().top;
-        // Convertimos `style.top` de string a número para comparar
-        const stickyTop = parseFloat(
-          (titleRef.current as HTMLHeadingElement).style.top,
-        );
-
-        // Chequea si el elemento está en la posición sticky
-        setIsPinned(topPosition <= stickyTop);
-      }
-
-      // Detectar qué título está en el viewport
-
-      titles.forEach((title, index) => {
-        const titleElement = title as HTMLHeadingElement;
-        const rect = titleElement.getBoundingClientRect();
-        const expectedTop = stickyPoints[index];
-
-        // Detectar si un título está pineado
-        if (Math.abs(rect.top - expectedTop) <= 3) {
-          pinnedIndex = index; // Guardamos el índice del último título pineado
-          isAnyPinned = true; // Marcamos que al menos uno está pineado
-        }
-      });
-
-      titles.forEach((e, i) => {
-        const title = e as HTMLHeadingElement;
-        if (pinnedIndex > -1 && i <= pinnedIndex) {
-          title.style.backgroundColor = colors[pinnedIndex + 1];
-          title.style.color = pinnedIndex === 2 ? "#1F1F1F" : "#DFDFDF";
-          title.style.borderBottom = `1px solid ${pinnedIndex === 2 ? "#1F1F1F" : "#DFDFDF"}`;
-        } else {
-          title.style.borderBottom = "1px solid transparent";
-        }
-      });
-
-      if (isAnyPinned) {
-        if (pinnedIndex !== lastPinnedIndex) {
-          setBgColor(colors[pinnedIndex + 1]);
-          lastPinnedIndex = pinnedIndex; // Actualizamos el último índice pineado
-        }
-      } else {
-        setBgColor(colors[0]);
-      }
-
-      const documentHeight = document.documentElement.scrollHeight;
-      const viewportHeight = window.innerHeight;
-      const scrollPosition = window.scrollY;
-
-      // Detectar si está en el final
-      const atBottom = scrollPosition + viewportHeight >= documentHeight;
-      setIsAtBottom(atBottom);
-    };
-
-    // Agrega el evento de scroll
-    window.addEventListener("scroll", handleScroll);
-
-    // Limpieza del evento
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    const mainHeader = document.getElementById("main-header") as HTMLDivElement;
-
-    if (mainHeader) {
-      mainHeader.style.backgroundColor = bgColor;
-
-      const svgs = mainHeader.querySelectorAll("svg");
-
-      svgs.forEach((svg: SVGElement) => {
-        if (bgColor === "#1F1F1F") {
-          svg.style.filter = "invert(1)";
-        } else {
-          svg.style.filter = "invert(0)";
-        }
-      });
-    }
-  }, [bgColor]);
+  // console.log(isPinned, isAtBottom)
+  const bgColor =
+    indexPosition < lastPinnedIndex && backgroundColor
+      ? backgroundColor
+      : defaultBackgroundColor;
+  const fgColor = bgColor === "#DFDFDF" ? "#1F1F1F" : "#DFDFDF";
 
   return (
     <Typography
-      ref={titleRef}
       data-cy="homeTitle"
       className="home-section-title"
       sx={{
-        fontSize: isPinned ? 18 : 32,
+        // fontSize: isPinned ? 18 : 32,
         display: "flex",
         alignItems: "center",
         gap: 2,
         position: "sticky",
-        bgcolor: backgroundColor,
-        color: backgroundColor === "#DFDFDF" ? "#1F1F1F" : "#DFDFDF",
+        bgcolor: bgColor,
+        color: fgColor,
         px: 4,
-        py: 2,
-        height: isPinned ? 42 : 64,
-        transition: "all 100ms",
+        py: 0,
+        height: 42,
+        transition: "all 900ms",
+        overflowY: "hidden",
       }}
       {...props}
     >
-      <Box
-        component="span"
-        className={isAtBottom ? "asterik-delay" : ""}
-        sx={{
+      <motion.span
+        key={`${indexPosition}-asterik`}
+        style={{
           display: "flex",
           alignItems: "center",
-          width: isAtBottom ? 18 : isPinned ? 0 : 40,
-          transform: `scale(${isPinned && !isAtBottom ? 0 : 1})`,
-          transition: "all 100ms",
+          // width: isAtBottom ? 18 : 40,
+          width: 40,
+        }}
+        animate={{
+          scale: isAtBottom ? 0.6 : isPinned ? 0 : 1,
+        }}
+        transition={{
+          duration: 0.25,
+          ease: "easeInOut",
+          delay: isAtBottom ? indexPosition * 0.1 : 0,
         }}
       >
-        <Icon icon="asterisk" size={isAtBottom ? 18 : 40} color="inherit" />
-      </Box>
-      {children}
+        <Icon icon="asterisk" size={40} color="inherit" />
+      </motion.span>
+
+      <motion.span
+        key={`${indexPosition}-title-menu`}
+        style={{ transformOrigin: "left", fontSize: "32px", lineHeight: 1 }}
+        initial={{ scale: 1 }}
+        animate={{
+          scale: isPinned ? 0.5625 : 1,
+          x: isPinned && !isAtBottom ? -40 : isAtBottom ? -8 : 0,
+        }}
+        transition={{
+          duration: 0.25,
+          ease: "easeInOut",
+          delay: isAtBottom ? indexPosition * 0.1 : 0,
+        }}
+      >
+        {children}
+      </motion.span>
     </Typography>
   );
 };

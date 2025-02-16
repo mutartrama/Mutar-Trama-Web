@@ -61,6 +61,9 @@ export const ParticipateDialog = ({ blok }: any) => {
             right: 0,
             p: 0,
             color: "text.primary",
+            "&:hover": {
+              color: "secondary.main",
+            },
           }}
         >
           <Icon icon="close" size={40} />
@@ -72,6 +75,7 @@ export const ParticipateDialog = ({ blok }: any) => {
         </Box>
         <DialogContent>
           <Box
+            className="link-wrapper"
             sx={{
               color: "text.secondary",
               fontSize: 18,

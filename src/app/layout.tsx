@@ -9,6 +9,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { ReactNode } from "react";
+import { GlobalNavigationLayoutProvider } from "@/contexts/global-navigation-layout";
+import "./global.css";
 
 interface LayoutProps {
   children: ReactNode;
@@ -64,19 +66,22 @@ export default async function RootLayout({ children, params }: LayoutProps) {
   const messages = await getMessages();
 
   return (
-    <html lang="en">
-      <body
-        className={`${viaodaLibre.variable} ${telegraf200.variable}  ${telegraf400.variable}  ${telegraf800.variable}`}
-      >
+    <html
+      lang="en"
+      className={`${viaodaLibre.variable} ${telegraf200.variable}  ${telegraf400.variable}  ${telegraf800.variable}`}
+    >
+      <body>
         {/* <StoryblokProvider> */}
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <NextIntlClientProvider messages={messages}>
-              {children}
-            </NextIntlClientProvider>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <GlobalNavigationLayoutProvider>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <NextIntlClientProvider messages={messages}>
+                {children}
+              </NextIntlClientProvider>
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </GlobalNavigationLayoutProvider>
         {/* </StoryblokProvider> */}
       </body>
     </html>

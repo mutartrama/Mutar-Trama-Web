@@ -17,7 +17,7 @@ export const HomeNewsCard = ({ blok }: any) => {
         borderRadius: 0,
         border: "none",
         pb: 5,
-        px: 20,
+        px: { xs: 5, lg: 20 },
         maxWidth: { lg: 800, xl: 900 },
         height: "100%",
         justifyContent: "center",
