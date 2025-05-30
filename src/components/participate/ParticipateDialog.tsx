@@ -1,13 +1,17 @@
 "use client";
-import { useLayoutEffect, useState } from "react";
+import { ReactNode, useLayoutEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import { storyblokEditable } from "@storyblok/react/rsc";
 import { Box, IconButton, styled } from "@mui/material";
-import Image from "next/image";
-import { richTextResolver } from "@storyblok/richtext";
 import Icon from "../icon/Icon";
+import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
+
+interface ParticipateDialogProps {
+  buttonLabel: string;
+  image: ReactNode;
+  content: string;
+}
 
 const CustomDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -16,11 +20,20 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     margin: theme.spacing(6),
     overflow: "visible",
   },
+  "& p": {
+    margin: 0,
+    padding: 0,
+    fontSize: 18,
+    lineHeight: "120%",
+    color: theme.palette.text.secondary,
+  },
 }));
 
-export const ParticipateDialog = ({ blok }: any) => {
-  const { render } = richTextResolver();
-
+export const ParticipateDialog = ({
+  buttonLabel,
+  content,
+  image,
+}: ParticipateDialogProps) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -41,7 +54,7 @@ export const ParticipateDialog = ({ blok }: any) => {
   }, [open]);
 
   return (
-    <Box {...storyblokEditable(blok)}>
+    <Box>
       <Button
         variant="text"
         size="large"
@@ -51,7 +64,7 @@ export const ParticipateDialog = ({ blok }: any) => {
           mb: 5,
         }}
       >
-        {blok.buttonLabel}
+        {buttonLabel}
       </Button>
       <CustomDialog open={open} onClose={handleClose}>
         <IconButton
@@ -69,21 +82,47 @@ export const ParticipateDialog = ({ blok }: any) => {
           <Icon icon="close" size={40} />
         </IconButton>
         <Box
-          sx={{ position: "relative", width: 160, height: 160, minHeight: 160 }}
+          sx={{
+            position: "relative",
+            width: { xs: 160, lg: 250 },
+            height: { xs: 160, lg: 250 },
+            mx: 5,
+          }}
         >
-          <Image src={blok.image.filename} alt={blok.image.alt} fill></Image>
+          {image}
         </Box>
         <DialogContent>
-          <Box
-            className="link-wrapper"
-            sx={{
-              color: "text.secondary",
-              fontSize: 18,
-            }}
-            dangerouslySetInnerHTML={{
-              __html: render(blok.content) as TrustedHTML,
-            }}
-          />
+          <Box className="link-wrapper">
+            <MarkdownWrapper
+              components={{
+                // eslint-disable-next-line
+                a: ({ node, ...props }) => {
+                  const isInternal = props.href?.startsWith("#");
+
+                  return (
+                    <a
+                      {...props}
+                      target={isInternal ? undefined : "_blank"}
+                      rel={isInternal ? undefined : "noopener noreferrer"}
+                      onClick={(e) => {
+                        if (isInternal) {
+                          e.preventDefault(); // Evitás el comportamiento por defecto
+                          handleClose(); // Cerrás el modal
+
+                          setTimeout(() => {
+                            const el = document.querySelector(`${props.href}`);
+                            if (el) el.scrollIntoView({ behavior: "smooth" });
+                          }, 100);
+                        }
+                      }}
+                    />
+                  );
+                },
+              }}
+            >
+              {content}
+            </MarkdownWrapper>
+          </Box>
         </DialogContent>
       </CustomDialog>
     </Box>

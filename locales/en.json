@@ -3,6 +3,15 @@
     "link": "Español",
     "to": "es"
   },
+  "MenuItems": {
+    "news": "News",
+    "aboutNetwork": "About Network",
+    "projects": "Projects",
+    "participate": "Participate"
+  },
+  "Hero": {
+    "title": "Weaving our own web of relational art"
+  },
   "Footer": {
     "title": "Mutar Trama.",
     "subtitle": "From Argentina, with the world.",

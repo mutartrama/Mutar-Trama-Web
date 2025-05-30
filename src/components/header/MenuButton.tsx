@@ -1,20 +1,23 @@
 "use client";
 import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Icon from "../icon/Icon";
+import { usePathname, useRouter } from "@/i18n/routing";
 
 interface MenuButtonProps {
   fill?: string;
 }
-
-// const sections = ["#footer-section", "#hero"];
 
 export const MenuButton = ({ fill }: MenuButtonProps) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const { isMenuOpen, toggleMenuOpen } = useGlobalNavigationLayout();
   const [currentFill, setCurrentFill] = useState("#1F1F1F");
+  const [isPending, startTransition] = useTransition();
+
+  const pathname = usePathname();
+  const router = useRouter();
 
   const btnSize = isLargeScreen ? 50 : 40;
 
@@ -22,12 +25,25 @@ export const MenuButton = ({ fill }: MenuButtonProps) => {
     if (fill) setCurrentFill(fill);
   }, [fill]);
 
+  const onClickMenuButton = () => {
+    if (pathname !== "/") {
+      startTransition(() => {
+        router.replace("/?scrollTo=footer");
+      });
+      return;
+    }
+
+    const scrollingElement = document.scrollingElement || document.body;
+    window.scrollTo({
+      top: isMenuOpen ? 0 : scrollingElement.scrollHeight,
+      behavior: "smooth",
+    });
+
+    toggleMenuOpen();
+  };
+
   return (
-    <IconButton
-      // LinkComponent={Link}
-      // href={isMenuOpen ? "/#hero" : "/#footer-menu"}
-      onClick={() => toggleMenuOpen()}
-    >
+    <IconButton onClick={onClickMenuButton} disabled={isPending}>
       <Box
         sx={{
           position: "relative",

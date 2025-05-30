@@ -3,6 +3,32 @@
     "link": "English",
     "to": "en"
   },
+  "MenuItems": {
+    "news": "Novedades",
+    "aboutNetwork": "Sobre la red",
+    "projects": "Proyectos",
+    "participate": "Participar"
+  },
+  "Hero": {
+    "title": "Tejiendo nuestra propia red de arte relacional"
+  },
+  "AboutNetwork": {
+    "title": "Red artistica interactiva",
+    "text1": "Estás en una plataforma de arte relacional: una red de arte porosa, viva y en permanente expansión, abierta a resonar en comunidad mediante el concepto de **Prácticas Narrativas***.",
+    "text2": "Aquí entendemos el arte como una **herramienta de transformación** desde la que crear espacios generadores de salud física y mental.",
+    "text3": "Elegimos producir arte de manera colaborativa para inspirar conversaciones puente hacia presentes deseados,  generando **experiencias transdisciplinarias presenciales y virtuales** con diálogos entre instalaciones, escritura, arte performativo, sonoro, visual, audiovisual, filosofía, psicología, etc.",
+    "disclaimer": "* Las Prácticas Narrativas son una herramienta para crear contra-documentos posibilitadores de historias preferidas, es decir, piezas que contengan historias en las que las personas se reescriben como eligen hacerlo y no como les dicen que deben hacerlo."
+  },
+  "Participate": {
+    "title": "Cómo formar parte de la red",
+    "description": "Mutar Trama es actualmente un trabajo en proceso del que podés formar parte mediante la **inspiración** (resonando a través de cualquier tipo de expresión artística), el **apoyo** (económico y de difusión del proyecto) o acercando **propuestas** que permitan la participación colectiva en proyectos alineados con un espíritu transformador.",
+    "modalTitle1": "Resonar",
+    "modalText1": "Si alguno de los [→ proyectos](#projects) presentes colectivo te resulta inspirador, podés resonar artísticamente en comunidad. Mutar Trama busca ser un espacio seguro para ser quien quieras ser, desvestirte de aquello que sobra y nutrir de arte la voz de la libertad. <br /><br /> Para hacerlo no es necesario que te consideres “artista”. Creemos más importantes las relaciones que se establecen entre las personas que la rigurosidad técnica detrás del objeto artístico en sí, disintiendo de la cultura de la experticia y propiciando que cada persona sea parte de un colectivo vivo y en constante expansión.",
+    "modalTitle2": "Colaborar",
+    "modalText2": "Podés apoyarnos mediante la difusión (en redes sociales o acercándole información a une amigue) y/o el aporte económico, proponiéndonos un programa de mecenazgo o haciendo alguna donación en [→ Coffee](https://cafecito.app/). Somos un colectivo que no tiene fines de lucro. Los aportes económicos son destinados a mantener y mejorar la plataforma web así como a generar nuevas obras.",
+    "modalTitle3": "Proponer",
+    "modalText3": "Si disponés de un espacio cultural en el que te gustaría desarrollar un encuentro transdisciplinario colectivo, tenés una idea de proyecto transdisciplinario o te interesa la posibilidad de exhibir los ya existentes, mandanos un [→ email](mailto:mutar.trama@gmail.com)."
+  },
   "Footer": {
     "title": "Mutar Trama.",
     "subtitle": "Desde argentina, con el mundo.",

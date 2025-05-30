@@ -4,100 +4,104 @@ import { MutarTramaLogo } from "./MutarTramaLogo";
 import { MenuButton } from "./MenuButton";
 import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
 import { Link } from "@/i18n/routing";
-import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
-import { useEffect } from "react";
-import { animate } from "motion";
 
 interface HeaderProps {
+  activeIndex?: number | null;
   id?: string;
   bgcolor?: string;
   fill?: string;
+  reachedEnd: boolean;
 }
 
-export const Header = ({ bgcolor, id, fill = "#1f1f1f" }: HeaderProps) => {
-  const { backgroundColor, isLoaded } = useGlobalNavigationLayout();
+const backgroundColors = [
+  "#DFDFDF",
+  "#6856D9",
+  "#1F1F1F",
+  "#DFDFDF",
+  "#1F1F1F",
+  "#0D0D0D",
+];
+const foregroundColors = [
+  "#1F1F1F",
+  "#DFDFDF",
+  "#DFDFDF",
+  "#1F1F1F",
+  "#DFDFDF",
+  "#DFDFDF",
+];
 
-  useEffect(() => {
-    if (isLoaded) {
-      animate("#header-flower-logo", { opacity: 1, animationDuration: 1 });
-      animate("#header-menu-button", {
-        opacity: 1,
-        animationDuration: 1,
-        animationDelay: 0.25,
-      });
-      animate("#header-switch-lang", {
-        opacity: 1,
-        animationDuration: 1,
-        animationDelay: 0.5,
-      });
-    }
-  }, [isLoaded]);
+export const Header = ({
+  id,
+  activeIndex,
+  reachedEnd,
+  bgcolor,
+  fill,
+}: HeaderProps) => {
+  const lastIndex = backgroundColors.length - 1;
 
-  useEffect(() => {
-    const mainHeader = document.getElementById("main-header") as HTMLDivElement;
-    const switchLanguage = document.getElementById(
-      "switch-language",
-    ) as HTMLDivElement;
+  const backgroundColor = bgcolor
+    ? bgcolor
+    : reachedEnd
+      ? backgroundColors[lastIndex]
+      : backgroundColors[
+          typeof activeIndex === "number" ? Math.min(activeIndex, lastIndex) : 0
+        ];
 
-    if (mainHeader) {
-      mainHeader.style.backgroundColor = backgroundColor || "#DFDFDF";
-
-      const svgs = mainHeader.querySelectorAll("svg");
-
-      svgs.forEach((svg: SVGElement) => {
-        if (
-          backgroundColor === "#1F1F1F" ||
-          backgroundColor === "#6856D9" ||
-          backgroundColor === "#000000"
-        ) {
-          svg.style.fill = "#DFDFDF";
-          switchLanguage.style.color = "#DFDFDF";
-        } else {
-          svg.style.fill = "#1F1F1F";
-          switchLanguage.style.color = "#1F1F1F";
-        }
-      });
-    }
-  }, [backgroundColor]);
+  const foregroundColor = fill
+    ? fill
+    : reachedEnd
+      ? foregroundColors[lastIndex]
+      : foregroundColors[
+          typeof activeIndex === "number" ? Math.min(activeIndex, lastIndex) : 0
+        ];
 
   return (
-    <Stack
-      id={id}
-      direction={{ xs: "row", lg: "column" }}
-      sx={{
-        height: { xs: 70, lg: "100vh" },
-        position: "fixed",
-        px: 5,
-        top: 0,
-        left: 0,
-        width: { xs: "100vw", lg: 120 },
-        justifyContent: "space-between",
+    <Box
+      key="main-header"
+      style={{
+        display: "flex",
         alignItems: "center",
-        zIndex: 10,
-        py: { lg: 5 },
-        bgcolor: bgcolor,
-        transition: "all 900ms",
       }}
     >
-      <Link id="header-flower-logo" href="/" style={{ opacity: 0 }}>
-        <Box sx={{ fill: fill }}>
-          <FlowerLogo />
-        </Box>
-      </Link>
-      <Stack sx={{ display: { lg: "none", mixBlendMode: "darken" } }}>
-        <MutarTramaLogo />
-      </Stack>
-      <Box id="header-menu-button" sx={{ opacity: 0 }}>
-        <MenuButton fill={fill} />
-      </Box>
-
       <Stack
-        id="header-switch-lang"
-        justifyContent="center"
-        sx={{ display: { xs: "none", lg: "flex", opacity: 0 } }}
+        id={id}
+        direction={{ xs: "row", lg: "column" }}
+        sx={{
+          height: { xs: 70, lg: "100vh" },
+          backgroundColor: backgroundColor,
+          color: foregroundColor,
+          transition: "all 0.2s ease-in-out",
+          position: "fixed",
+          px: 5,
+          top: 0,
+          left: 0,
+          width: { xs: "100vw", lg: 120 },
+          justifyContent: "space-between",
+          alignItems: "center",
+          zIndex: 10,
+          py: { lg: 5 },
+        }}
       >
-        <SwitchLanguageButton fill={fill} />
+        <Link id="header-flower-logo" href="/">
+          <Box sx={{ fill: foregroundColor }}>
+            <FlowerLogo />
+          </Box>
+        </Link>
+        <Stack sx={{ display: { lg: "none", mixBlendMode: "darken" } }}>
+          <MutarTramaLogo />
+        </Stack>
+        <Box id="header-menu-button">
+          <MenuButton fill={foregroundColor} />
+        </Box>
+
+        <Stack
+          id="header-switch-lang"
+          justifyContent="center"
+          sx={{ display: { xs: "none", lg: "flex" } }}
+        >
+          <SwitchLanguageButton fill={foregroundColor} />
+        </Stack>
       </Stack>
-    </Stack>
+    </Box>
   );
 };

@@ -1,24 +1,29 @@
 import { Link } from "@/i18n/routing";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { storyblokEditable } from "@storyblok/react/rsc";
 import { useTranslations } from "next-intl";
 import Icon from "../icon/Icon";
 import { NewsletterField } from "../newsletter-field/NewsletterField";
 import { useEffect, useRef } from "react";
-import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 import { scroll, animate } from "motion";
 
-export const Footer = ({ blok }: any) => {
+interface FooterProps {
+  reachedEnd: boolean;
+}
+
+const backgroundColors = ["#1F1F1F", "#0D0D0D"]; // color normal y color reachedEnd
+
+export const Footer = ({ reachedEnd }: FooterProps) => {
   const t = useTranslations("Footer");
 
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { isLoaded, pageWrapperRef, toggleMenuOpen } =
-    useGlobalNavigationLayout();
+  const backgroundColor = reachedEnd
+    ? backgroundColors[1]
+    : backgroundColors[0];
 
   useEffect(() => {
-    if (isLoaded && contentRef.current && pageWrapperRef?.current) {
+    if (contentRef.current) {
       scroll(
         animate(
           contentRef.current as HTMLElement,
@@ -30,32 +35,11 @@ export const Footer = ({ blok }: any) => {
         ),
         {
           target: contentRef.current, // El elemento específico que queremos animar
-          container: pageWrapperRef.current as HTMLElement,
           offset: ["start end", "end end"],
         },
       );
     }
-  }, [isLoaded, contentRef, pageWrapperRef]);
-
-  useEffect(() => {
-    if (containerRef.current && pageWrapperRef?.current) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            toggleMenuOpen(true);
-          } else {
-            toggleMenuOpen(false);
-          }
-        },
-        {
-          root: pageWrapperRef.current,
-          threshold: 1,
-        },
-      );
-
-      observer.observe(containerRef.current);
-    }
-  }, [containerRef, pageWrapperRef, toggleMenuOpen]);
+  }, [contentRef]);
 
   return (
     <Box
@@ -70,7 +54,7 @@ export const Footer = ({ blok }: any) => {
         px: 5,
         pl: { lg: "calc(120px + 75px * 4 + 2rem)", xl: "calc(160px + 1rem)" },
         pt: 24,
-        bgcolor: "background.default",
+        bgcolor: backgroundColor,
         backgroundImage: 'url("./images/deco_echo.png")',
         backgroundRepeat: "no-repeat",
         backgroundPosition: {
@@ -78,9 +62,8 @@ export const Footer = ({ blok }: any) => {
           lg: "top 20% right 10%",
           xl: "top 20% right 20%",
         },
+        transition: "all 0.2s ease-in-out",
       }}
-      data-cy="footer"
-      {...storyblokEditable(blok)}
     >
       <Stack
         ref={contentRef}

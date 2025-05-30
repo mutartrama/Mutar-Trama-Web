@@ -71,7 +71,6 @@ export default async function RootLayout({ children, params }: LayoutProps) {
       className={`${viaodaLibre.variable} ${telegraf200.variable}  ${telegraf400.variable}  ${telegraf800.variable}`}
     >
       <body>
-        {/* <StoryblokProvider> */}
         <GlobalNavigationLayoutProvider>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={theme}>
@@ -82,7 +81,6 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             </ThemeProvider>
           </AppRouterCacheProvider>
         </GlobalNavigationLayoutProvider>
-        {/* </StoryblokProvider> */}
       </body>
     </html>
   );

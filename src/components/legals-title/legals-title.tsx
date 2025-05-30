@@ -1,34 +1,35 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Icon from "../icon/Icon";
-import { useEffect, useRef, useState } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 
-export const LegalsTitle = () => {
+export const LegalsTitle = ({ children }: PropsWithChildren) => {
   const theme = useTheme();
   const isUpMd = useMediaQuery(theme.breakpoints.up("md"));
   const textRef = useRef<HTMLDivElement>(null);
+  const isUpMdRef = useRef(isUpMd);
   const [hasScrolled, setHasScrolled] = useState(false);
+
+  // Actualizá el ref si cambia el breakpoint
+  useEffect(() => {
+    isUpMdRef.current = isUpMd;
+  }, [isUpMd]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const pageContainer = document.querySelector(".page-container");
-      if (pageContainer && textRef.current) {
-        const topRef = pageContainer.getBoundingClientRect().top;
-        console.log(topRef, isUpMd);
-        const reference = isUpMd ? 110 : 170;
-        if (topRef < reference) {
-          setHasScrolled(true);
-        } else {
-          setHasScrolled(false);
-        }
+      if (textRef.current) {
+        const topRef = document.body.getBoundingClientRect().top;
+
+        setHasScrolled(topRef === 0 ? false : true);
       }
     };
 
+    // Llamar una vez para actualizar estado inicial
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
 
-    return () => {
-      window.addEventListener("scroll", handleScroll);
-    };
-  }, [isUpMd]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []); // sin dependencias: se monta una sola vez
 
   return (
     <Box
@@ -37,7 +38,7 @@ export const LegalsTitle = () => {
         top: 70,
         borderBottom: `1px solid ${hasScrolled ? "#DFDFDF" : "transparent"}`,
         transition: "all 200ms",
-
+        bgcolor: "primary.main",
         [theme.breakpoints.up("lg")]: {
           position: "fixed",
           top: 0,
@@ -54,8 +55,6 @@ export const LegalsTitle = () => {
       <Typography
         ref={textRef}
         sx={{
-          bgcolor: "primary.main",
-          fontSize: hasScrolled ? 24 : 32,
           display: "flex",
           alignItems: "center",
           gap: 2,
@@ -65,7 +64,9 @@ export const LegalsTitle = () => {
           height: 60,
           transition: "all 200ms",
           lineHeight: 1,
-          transform: { lg: "rotate(-90deg)" },
+          fontSize: 28,
+          transformOrigin: "center left",
+          transform: hasScrolled ? "scale(0.55)" : "scale(1)",
         }}
       >
         <Box
@@ -73,18 +74,17 @@ export const LegalsTitle = () => {
           sx={{
             display: "flex",
             alignItems: "center",
-            width: hasScrolled ? 32 : 40,
             transition: "all 200ms",
           }}
         >
           <Icon
+            size={40}
             icon="asterisk"
-            size={hasScrolled ? 32 : 40}
             color="inherit"
             style={{ transition: "all 200ms" }}
           />
         </Box>
-        Legales
+        {children}
       </Typography>
     </Box>
   );

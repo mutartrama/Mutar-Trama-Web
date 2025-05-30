@@ -1,21 +1,20 @@
 "use client";
 import { Box, Stack, Typography } from "@mui/material";
-import { storyblokEditable } from "@storyblok/react/rsc";
-import { richTextResolver } from "@storyblok/richtext";
 import { ParticipateDialog } from "./ParticipateDialog";
-import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
+import { useTranslations } from "next-intl";
+import Markdown from "react-markdown";
+import { DecoCircles } from "./DecoCircles";
+import { DecoDrops } from "./DecoDrops";
+import { DecoArrowsGrid } from "./DecoArrowsGrid";
 
-export const Participate = ({ blok }: any) => {
-  const { render } = richTextResolver();
-
+export const Participate = () => {
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const { isLoaded, pageWrapperRef } = useGlobalNavigationLayout();
+  const t = useTranslations("Participate");
 
   useEffect(() => {
-    if (isLoaded && contentRef.current && pageWrapperRef?.current) {
+    if (contentRef.current) {
       scroll(
         animate(
           contentRef.current as HTMLElement,
@@ -27,26 +26,22 @@ export const Participate = ({ blok }: any) => {
         ),
         {
           target: contentRef.current, // El elemento específico que queremos animar
-          container: pageWrapperRef.current as HTMLElement,
           offset: ["start end", "end end"],
         },
       );
     }
-  }, [isLoaded, contentRef, pageWrapperRef]);
+  }, [contentRef]);
 
   return (
     <Box
       id="participate"
       className="participate-section"
-      data-cy="participate"
-      {...storyblokEditable(blok)}
       sx={{
         position: "relative",
         bgcolor: "background.default",
       }}
     >
       <Box
-        ref={contentRef}
         sx={{
           px: 5,
           pt: 30,
@@ -60,25 +55,36 @@ export const Participate = ({ blok }: any) => {
           backgroundPosition: "bottom right",
         }}
       >
-        <Stack gap={12} sx={{ maxWidth: 580 }}>
+        <Stack ref={contentRef} gap={12} sx={{ maxWidth: 580 }}>
           <Typography
             variant="h2"
             sx={{ fontSize: { lg: 100 }, lineHeight: 1 }}
           >
-            {blok.title}
+            {t("title")}
           </Typography>
           <Box
             sx={{
               fontSize: { lg: 18 },
             }}
-            dangerouslySetInnerHTML={{
-              __html: render(blok.content) as TrustedHTML,
-            }}
-          />
+          >
+            <Markdown>{t("description")}</Markdown>
+          </Box>
           <Stack>
-            {blok.dialogs.map((dialog: any, index: number) => (
-              <ParticipateDialog blok={dialog} key={index} />
-            ))}
+            <ParticipateDialog
+              buttonLabel={t("modalTitle1")}
+              content={t("modalText1")}
+              image={<DecoCircles />}
+            />
+            <ParticipateDialog
+              buttonLabel={t("modalTitle2")}
+              content={t("modalText2")}
+              image={<DecoDrops />}
+            />
+            <ParticipateDialog
+              buttonLabel={t("modalTitle3")}
+              content={t("modalText3")}
+              image={<DecoArrowsGrid />}
+            />
           </Stack>
         </Stack>
       </Box>

@@ -1,22 +1,34 @@
 "use client";
 import { Header } from "@/components/header/Header";
-import { getStoryblokApi } from "@/lib/storyblok";
-import { StoryblokStory } from "@storyblok/react/rsc";
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { useLocalePath } from "@/hooks/useLocalePath";
 import { LegalsTitle } from "@/components/legals-title/legals-title";
+import { MarkdownWrapper } from "@/components/markdown-wrapper/MarkdownWrapper";
 
-export default function HomePage() {
-  const [data, setData] = useState<any>();
+interface LegalsData {
+  title: string;
+  content: string;
+  label: string;
+}
+
+export default function Page() {
   const locale = useLocalePath();
 
-  const isVisible = !!data;
+  const [data, setData] = useState<LegalsData>();
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await fetchData(locale);
-      setData(data);
+      try {
+        const res = await fetch(
+          `/api/fetch-legals?lang=${locale}&key=terms_and_conditions`,
+        );
+        const { data } = await res.json();
+
+        setData(data[0]);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
     };
     getData();
   }, [locale]);
@@ -24,15 +36,15 @@ export default function HomePage() {
   return (
     <Box
       sx={{
-        opacity: isVisible ? 1 : 0,
         transition: "opacity 0.8s ease-in-out",
         pt: "70px",
         bgcolor: "primary.main",
         pb: 10,
+        minHeight: "110vh",
       }}
     >
-      <Header bgcolor="primary.main" fill="#DFDFDF" />
-      <LegalsTitle />
+      <Header bgcolor="primary.main" fill="#DFDFDF" reachedEnd={false} />
+      <LegalsTitle>{data?.label}</LegalsTitle>
       <Box
         sx={{
           px: 5,
@@ -40,19 +52,10 @@ export default function HomePage() {
           py: 10,
         }}
       >
-        {data && <StoryblokStory story={data.story} />}
+        <MarkdownWrapper>
+          {data?.content ? data.content : "Loading..."}
+        </MarkdownWrapper>
       </Box>
     </Box>
   );
-}
-
-async function fetchData(locale: string) {
-  const version =
-    process.env.NODE_ENV === "development" ? "draft" : "published";
-
-  const storyblokApi = getStoryblokApi();
-  return storyblokApi.get("cdn/stories/terms-and-conditions", {
-    version: version,
-    language: locale,
-  });
 }

@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "a.storyblok.com",
+        hostname: "res.cloudinary.com",
       },
     ],
   },

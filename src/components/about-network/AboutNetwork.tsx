@@ -1,18 +1,15 @@
-import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 import { Box, Typography } from "@mui/material";
-import { storyblokEditable } from "@storyblok/react/rsc";
-import { richTextResolver } from "@storyblok/richtext";
 import { animate, scroll } from "motion";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
+import Markdown from "react-markdown";
 
-export const AboutNetwork = ({ blok }: any) => {
-  const { render } = richTextResolver();
-
-  const { isLoaded, pageWrapperRef } = useGlobalNavigationLayout();
+export const AboutNetwork = ({}: any) => {
+  const t = useTranslations("AboutNetwork");
   const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (isLoaded && containerRef.current && pageWrapperRef?.current) {
+    if (containerRef.current) {
       scroll(
         animate(
           containerRef.current as HTMLElement,
@@ -24,21 +21,14 @@ export const AboutNetwork = ({ blok }: any) => {
         ),
         {
           target: containerRef.current, // El elemento específico que queremos animar
-          container: pageWrapperRef.current as HTMLElement,
           offset: ["start end", "end end"],
         },
       );
     }
-  }, [isLoaded, containerRef, pageWrapperRef]);
+  }, [containerRef]);
 
   return (
-    <Box
-      id="about-network"
-      className="about-net-section"
-      data-cy="aboutNetwork"
-      {...storyblokEditable(blok)}
-      sx={{ bgcolor: "background.default" }}
-    >
+    <Box id="about-network" sx={{ bgcolor: "background.default" }}>
       <Box
         sx={{
           px: 5,
@@ -50,7 +40,17 @@ export const AboutNetwork = ({ blok }: any) => {
           backgroundImage: 'url("./images/deco_flag.png")',
         }}
       >
-        <Box ref={containerRef} sx={{ maxWidth: 580, opacity: 0 }}>
+        <Box
+          ref={containerRef}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: { md: 10, lg: 15, xl: 20 },
+            maxWidth: 580,
+            opacity: 0,
+            "& p": { p: 0, m: 0, mb: 4 },
+          }}
+        >
           <Typography
             variant="h2"
             sx={{
@@ -59,27 +59,27 @@ export const AboutNetwork = ({ blok }: any) => {
               transform: "translateY(20px)",
             }}
           >
-            {blok.title}
+            {t("title")}
           </Typography>
           <Box
             sx={{
               fontSize: { lg: 16, xl: 18 },
               transform: "translateY(20px)",
             }}
-            dangerouslySetInnerHTML={{
-              __html: render(blok.description) as TrustedHTML,
-            }}
-          />
+          >
+            <Markdown>{t("text1")}</Markdown>
+            <Markdown>{t("text2")}</Markdown>
+            <Markdown>{t("text3")}</Markdown>
+          </Box>
           <Box
-            dangerouslySetInnerHTML={{
-              __html: render(blok.disclaimer) as TrustedHTML,
-            }}
             sx={{
               fontSize: 12,
               lineHeight: 1.15,
               transform: "translateY(20px)",
             }}
-          />
+          >
+            {t("disclaimer")}
+          </Box>
         </Box>
       </Box>
     </Box>

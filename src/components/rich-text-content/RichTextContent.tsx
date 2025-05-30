@@ -1,9 +1,6 @@
 import { Box } from "@mui/material";
-import { storyblokEditable } from "@storyblok/react/rsc";
-import { richTextResolver } from "@storyblok/richtext";
 
 export const RichTextContent = ({ blok }: any) => {
-  const { render } = richTextResolver();
   console.log(blok);
 
   return (
@@ -35,10 +32,8 @@ export const RichTextContent = ({ blok }: any) => {
           marginBlock: 0,
         },
       }}
-      data-cy="rich-text-content"
-      {...storyblokEditable(blok)}
       dangerouslySetInnerHTML={{
-        __html: render(blok.content) as TrustedHTML,
+        __html: blok.content as TrustedHTML,
       }}
     />
   );

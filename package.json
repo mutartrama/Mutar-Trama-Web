@@ -2,6 +2,9 @@
   "name": "mutar-trama-web",
   "version": "0.1.0",
   "private": true,
+  "browser": {
+    "child_process": false
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -12,13 +15,14 @@
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@googleapis/sheets": "^9.7.0",
     "@gsap/react": "^2.1.1",
     "@mui/material": "^6.1.6",
     "@mui/material-nextjs": "^6.1.6",
-    "@storyblok/react": "^4.0.0",
-    "@storyblok/richtext": "^3.0.0",
     "flubber": "^0.4.2",
     "framer-motion": "^11.15.0",
+    "google-auth-library": "^9.15.1",
+    "google-spreadsheet": "^4.1.4",
     "lottie-react": "^2.4.0",
     "motion": "^10.18.0",
     "next": "15.0.2",
@@ -26,7 +30,10 @@
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-icomoon": "^2.5.7",
+    "react-markdown": "^10.1.0",
     "react-slick": "^0.30.2",
+    "rehype-raw": "^7.0.0",
+    "remark-breaks": "^4.0.0",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
@@ -41,5 +48,6 @@
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

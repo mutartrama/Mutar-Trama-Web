@@ -1,24 +1,25 @@
 "use client";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { ProjectCard } from "./ProjectsCard";
-
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
-import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
+import { ProjectsItemProps } from "./projects.types";
 
-export const Projects = ({ blok }: any) => {
+interface ProjectsProps {
+  projectsList: ProjectsItemProps[];
+}
+
+export const Projects = ({ projectsList }: ProjectsProps) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-
-  const { isLoaded, pageWrapperRef } = useGlobalNavigationLayout();
 
   const newsList = useRef<HTMLDivElement>(null);
   const newsSection = useRef<HTMLDivElement>(null);
 
-  const panelCount = blok.cardList.length - 1;
+  const panelCount = projectsList.length - 1;
 
   useEffect(() => {
-    if (newsList.current && newsSection.current && pageWrapperRef?.current) {
+    if (newsList.current && newsSection.current) {
       scroll(
         animate(newsList.current as any, {
           transform: [
@@ -28,14 +29,13 @@ export const Projects = ({ blok }: any) => {
         }),
         {
           target: newsSection.current,
-          container: pageWrapperRef.current as HTMLElement,
         },
       );
     }
-  }, [isLargeScreen, pageWrapperRef, panelCount]);
+  }, [isLargeScreen, panelCount]);
 
   useEffect(() => {
-    if (isLoaded && newsSection.current && pageWrapperRef) {
+    if (newsSection.current) {
       scroll(
         animate(
           newsSection.current as HTMLElement,
@@ -46,12 +46,11 @@ export const Projects = ({ blok }: any) => {
         ),
         {
           target: newsSection.current, // El elemento específico que queremos animar
-          container: pageWrapperRef.current as HTMLElement,
           offset: ["start end", "start 10%"],
         },
       );
     }
-  }, [isLoaded, newsSection, pageWrapperRef]);
+  }, [newsSection]);
 
   return (
     <Box
@@ -70,24 +69,26 @@ export const Projects = ({ blok }: any) => {
         ref={newsList}
         sx={{ display: "flex", position: "sticky", top: 0, flexWrap: "nowrap" }}
       >
-        {blok.cardList.map((card: any, index: number) => (
-          <Box
-            key={index}
-            className="projects-card"
-            sx={{
-              width: { xs: "100vw", lg: "50vw" },
-              flex: "0 0 auto",
-              height: "100vh",
-              pt: { xs: "120px", lg: "50px" },
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-              pr: { lg: "100px" },
-            }}
-          >
-            <ProjectCard blok={card} />
-          </Box>
-        ))}
+        {projectsList.map(
+          ({ key, ...data }: ProjectsItemProps, index: number) => (
+            <Box
+              key={`${key}-${index}`}
+              className="projects-card"
+              sx={{
+                width: { xs: "100vw", lg: "50vw" },
+                flex: "0 0 auto",
+                height: "100vh",
+                pt: { xs: "120px", lg: "50px" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "flex-end",
+                pr: { lg: "100px" },
+              }}
+            >
+              <ProjectCard {...data} />
+            </Box>
+          ),
+        )}
       </Box>
     </Box>
   );
