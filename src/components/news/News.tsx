@@ -2,24 +2,25 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
-import { NewsItemProps } from "./news.types";
 import { NewCard } from "./NewCard";
+import { NewsTabItem, StaticTextSection } from "@/pages/api/responses";
 
-interface News {
-  newsList: NewsItemProps[];
+interface NewsProps extends Partial<StaticTextSection> {
+  newsList: NewsTabItem[];
 }
 
-export const News = ({ newsList }: News) => {
+export const News = ({ newsList }: Partial<NewsProps>) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const newsListRef = useRef<HTMLDivElement>(null);
   const newsSectionRef = useRef<HTMLDivElement>(null);
 
-  const panelCount = Math.max(newsList.length, newsList.length > 1 ? 2 : 1); // Asegura al menos 2 paneles (scroll de 100vh)
+  const newsListLength = newsList?.length || 1;
+  const panelCount = Math.max(newsListLength, newsListLength > 1 ? 2 : 1); // Asegura al menos 2 paneles (scroll de 100vh)
 
   useEffect(() => {
-    if (newsList.length < 2) return;
+    if (newsListLength < 2) return;
 
     const panelWidth = isLargeScreen ? 800 : window.innerWidth;
 
@@ -28,7 +29,7 @@ export const News = ({ newsList }: News) => {
         animate(newsListRef.current as any, {
           transform: [
             "none",
-            `translateX(-${(newsList.length - 1) * panelWidth}px )`,
+            `translateX(-${(newsListLength - 1) * panelWidth}px )`,
           ],
         }),
         {
@@ -36,7 +37,25 @@ export const News = ({ newsList }: News) => {
         },
       );
     }
-  }, [isLargeScreen, newsList.length]);
+  }, [isLargeScreen, newsListLength]);
+
+  useEffect(() => {
+    if (newsListRef.current) {
+      scroll(
+        animate(
+          newsListRef.current as HTMLElement,
+          {
+            opacity: [0, 1],
+          },
+          { duration: 1 },
+        ),
+        {
+          target: newsListRef.current, // El elemento específico que queremos animar
+          offset: ["start end", "start 10%"],
+        },
+      );
+    }
+  }, [newsListRef]);
 
   return (
     <Box
@@ -62,7 +81,7 @@ export const News = ({ newsList }: News) => {
           width: "fit-content",
         }}
       >
-        {newsList.map(({ key, ...data }: NewsItemProps, index: number) => (
+        {newsList?.map(({ key, ...data }: NewsTabItem, index: number) => (
           <Box
             key={`${key}-${index}`}
             className="home-news-card"
@@ -73,7 +92,7 @@ export const News = ({ newsList }: News) => {
               pt: { xs: "120px", lg: "25px", xl: "50px" },
             }}
           >
-            <NewCard {...data} />
+            <NewCard key={key} {...data} />
           </Box>
         ))}
         <Box sx={{ width: { lg: 400 } }} />

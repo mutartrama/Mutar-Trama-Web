@@ -5,14 +5,15 @@ import Icon from "../icon/Icon";
 import { NewsletterField } from "../newsletter-field/NewsletterField";
 import { useEffect, useRef } from "react";
 import { scroll, animate } from "motion";
+import { StaticTextSection } from "@/pages/api/responses";
 
-interface FooterProps {
+interface FooterProps extends Partial<StaticTextSection> {
   reachedEnd: boolean;
 }
 
 const backgroundColors = ["#1F1F1F", "#0D0D0D"]; // color normal y color reachedEnd
 
-export const Footer = ({ reachedEnd }: FooterProps) => {
+export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
   const t = useTranslations("Footer");
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -81,15 +82,7 @@ export const Footer = ({ reachedEnd }: FooterProps) => {
               fontFamily: "var(--font-telegraf-800)",
             }}
           >
-            {t("title")}
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: 18,
-              maxWidth: 160,
-            }}
-          >
-            {t("subtitle")}
+            {paragraph}
           </Typography>
           <Box>
             <Button
@@ -155,9 +148,7 @@ export const Footer = ({ reachedEnd }: FooterProps) => {
           </Link>
         </Stack>
         <Stack direction="column" gap={4} pb={4}>
-          <Typography sx={{ fontSize: 12 }}>{t("ccTitle")}</Typography>
-          <Typography sx={{ fontSize: 12 }}>{t("ccText1")}</Typography>
-          <Typography sx={{ fontSize: 12 }}>{t("ccText2")}</Typography>
+          <Typography sx={{ fontSize: 12 }}>{epigraph}</Typography>
         </Stack>
       </Stack>
       <Box id="footer-menu" />

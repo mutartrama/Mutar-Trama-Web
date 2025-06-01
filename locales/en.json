@@ -9,31 +9,13 @@
     "projects": "Projects",
     "participate": "Participate"
   },
-  "Hero": {
-    "title": "Weaving our own web of relational art"
-  },
-  "Participate": {
-    "title": "Cómo formar parte de la red",
-    "description": "Mutar Trama es actualmente un trabajo en proceso del que podés formar parte mediante la **inspiración** (resonando a través de cualquier tipo de expresión artística), el **apoyo** (económico y de difusión del proyecto) o acercando **propuestas** que permitan la participación colectiva en proyectos alineados con un espíritu transformador.",
-    "modalTitle1": "Resonar",
-    "modalText1": "Si alguno de los [→ proyectos](#projects) presentes colectivo te resulta inspirador, podés resonar artísticamente en comunidad. Mutar Trama busca ser un espacio seguro para ser quien quieras ser, desvestirte de aquello que sobra y nutrir de arte la voz de la libertad. <br /><br /> Para hacerlo no es necesario que te consideres “artista”. Creemos más importantes las relaciones que se establecen entre las personas que la rigurosidad técnica detrás del objeto artístico en sí, disintiendo de la cultura de la experticia y propiciando que cada persona sea parte de un colectivo vivo y en constante expansión.",
-    "modalTitle2": "Colaborar",
-    "modalText2": "Podés apoyarnos mediante la difusión (en redes sociales o acercándole información a une amigue) y/o el aporte económico, proponiéndonos un programa de mecenazgo o haciendo alguna donación en [→ Coffee](https://cafecito.app/). Somos un colectivo que no tiene fines de lucro. Los aportes económicos son destinados a mantener y mejorar la plataforma web así como a generar nuevas obras.",
-    "modalTitle3": "Proponer",
-    "modalText3": "Si disponés de un espacio cultural en el que te gustaría desarrollar un encuentro transdisciplinario colectivo, tenés una idea de proyecto transdisciplinario o te interesa la posibilidad de exhibir los ya existentes, mandanos un [→ email](mailto:mutar.trama@gmail.com)."
-  },
   "Footer": {
-    "title": "Mutar Trama.",
-    "subtitle": "From Argentina, with the world.",
     "colaborateButton": "Collaborate",
     "newsletterTitle": "Newsletter",
     "newsletterText": "If you want to stay updated with the projects and initiatives we carry out, leave us your email!",
     "newsletterInputPlaceholder": "Your email",
     "contactUsLink": "Contact us",
     "termsAndCoditions": "General Terms of Use",
-    "privacyPolicy": "Privacy Policy",
-    "ccTitle": "(CC)** Mutar Trama 2024",
-    "ccText1": "**This platform aims to generate transdisciplinary artistic actions as a means of transformative collective sublimation towards salutogenesis.",
-    "ccText2": "By contributing your creative material to a collective work, you accept that this material becomes part of the artistic work itself and can be freely reused by the community for inspiring artistic purposes."
+    "privacyPolicy": "Privacy Policy"
   }
 }

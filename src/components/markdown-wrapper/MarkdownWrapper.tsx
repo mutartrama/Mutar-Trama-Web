@@ -4,7 +4,7 @@ import rehypeRaw from "rehype-raw";
 import { Box } from "@mui/material";
 
 interface MarkdownWrapperProps {
-  children: string;
+  children?: string;
   components?: Components;
 }
 
@@ -15,11 +15,19 @@ export const MarkdownWrapper = ({
   return (
     <Box
       sx={{
+        "& h2": {
+          fontSize: { xs: 42, lg: 54, xl: 72 },
+          fontFamily: "var(--font-viaoda-libre)",
+          margin: 0,
+        },
         "& ol, & ul": {
           paddingLeft: "1rem",
         },
         "& ol > li::marker, & ul > li::marker": {
           fontWeight: "bold",
+        },
+        "& p": {
+          margin: 0,
         },
       }}
     >
@@ -29,7 +37,7 @@ export const MarkdownWrapper = ({
         skipHtml={false}
         components={components}
       >
-        {children}
+        {`${children}`.replaceAll("<br/>", "\n").replaceAll("<br />", "\n")}
       </Markdown>
     </Box>
   );

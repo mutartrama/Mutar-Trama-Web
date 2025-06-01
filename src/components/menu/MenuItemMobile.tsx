@@ -1,5 +1,5 @@
 "use client";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { PropsWithChildren, memo } from "react";
 import Icon from "../icon/Icon";
 import { Link } from "@/i18n/routing";
@@ -35,8 +35,10 @@ const MenuItemMobileComponent = ({
   href,
   ...props
 }: PropsWithChildren<MenuItemMobileProps>) => {
+  const theme = useTheme();
+  const isUpMd = useMediaQuery(theme.breakpoints.up("md"));
   const calculatedIndex = index - 1;
-  const stickyTop = 70 + 48 * calculatedIndex;
+  const stickyTop = isUpMd ? 0 : 70 + 48 * calculatedIndex;
   const isSticky = typeof activeIndex === "number" && activeIndex >= index;
 
   const lastIndex = backgroundColors.length - 1;
@@ -62,13 +64,14 @@ const MenuItemMobileComponent = ({
       data-sticky-index={index}
       sx={{
         position: "sticky",
-        top: `${stickyTop}px`,
+        top: { xs: `${stickyTop}px`, md: 0 },
         zIndex: 2,
-        padding: 2,
         backgroundColor,
         color: foregroundColor,
         transition: "all 0.2s ease-in-out",
-        height: 48,
+        height: { xs: 48, md: 0 },
+        left: { md: calculatedIndex * 66 + 120 },
+        width: { md: 66 },
         display: "flex",
         alignItems: "center",
         textDecoration: "none",
@@ -77,28 +80,46 @@ const MenuItemMobileComponent = ({
     >
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          transformOrigin: "center left",
-          transform: isSticky ? "scale(0.55)" : "scale(1)",
-          transition: "all 0.2s ease-out",
-          gap: reachedEnd ? 3 : 2,
-          fontSize: 28,
-          transitionDelay: reachedEnd ? `${index * 0.15}s` : 0,
+          [theme.breakpoints.up("lg")]: {
+            transform: "translateY(50%)",
+            width: "66px",
+            height: "100vh",
+            backgroundColor,
+            position: "relative",
+            display: "flex",
+            alignItems: "flex-end",
+          },
         }}
       >
         <Box
-          component={Icon}
-          icon="asterisk"
-          size={40}
-          color="inherit"
           sx={{
-            transform: reachedEnd ? "scale(1.2)" : "scale(1)",
-            transition: "transform 0.2s ease-out",
-            transitionDelay: `${index * 0.15}s`,
+            display: "flex",
+            alignItems: "center",
+            transformOrigin: "center left",
+            transform: {
+              xs: isSticky ? "scale(0.55)" : "scale(1)",
+              md: "rotate(-90deg) translateY(calc(50% + 12px))",
+            },
+            transition: "all 0.2s ease-out",
+            gap: reachedEnd ? 3 : 2,
+            fontSize: 28,
+            transitionDelay: reachedEnd ? `${index * 0.15}s` : 0,
+            textWrap: "nowrap",
           }}
-        />
-        {children}
+        >
+          <Box
+            component={Icon}
+            icon="asterisk"
+            size={40}
+            color="inherit"
+            sx={{
+              transform: reachedEnd ? "scale(1.2)" : "scale(1)",
+              transition: "transform 0.2s ease-out",
+              transitionDelay: `${index * 0.15}s`,
+            }}
+          />
+          {children}
+        </Box>
       </Box>
     </Box>
   );

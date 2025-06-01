@@ -1,11 +1,19 @@
+import { StaticTextSection } from "@/pages/api/responses";
 import { Box, Typography } from "@mui/material";
 import { animate, scroll } from "motion";
-import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
-import Markdown from "react-markdown";
+import { AboutItemProps } from "./about.types";
+import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 
-export const AboutNetwork = ({}: any) => {
-  const t = useTranslations("AboutNetwork");
+interface AboutNetworkProps extends Partial<StaticTextSection> {
+  aboutList?: AboutItemProps[];
+}
+
+export const AboutNetwork = ({
+  title,
+  paragraph,
+  epigraph,
+}: Partial<AboutNetworkProps>) => {
   const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -45,7 +53,7 @@ export const AboutNetwork = ({}: any) => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            gap: { md: 10, lg: 15, xl: 20 },
+            gap: { xs: 10, md: 10, lg: 15, xl: 20 },
             maxWidth: 580,
             opacity: 0,
             "& p": { p: 0, m: 0, mb: 4 },
@@ -59,7 +67,7 @@ export const AboutNetwork = ({}: any) => {
               transform: "translateY(20px)",
             }}
           >
-            {t("title")}
+            <MarkdownWrapper>{title}</MarkdownWrapper>
           </Typography>
           <Box
             sx={{
@@ -67,9 +75,7 @@ export const AboutNetwork = ({}: any) => {
               transform: "translateY(20px)",
             }}
           >
-            <Markdown>{t("text1")}</Markdown>
-            <Markdown>{t("text2")}</Markdown>
-            <Markdown>{t("text3")}</Markdown>
+            <MarkdownWrapper>{paragraph}</MarkdownWrapper>
           </Box>
           <Box
             sx={{
@@ -78,7 +84,7 @@ export const AboutNetwork = ({}: any) => {
               transform: "translateY(20px)",
             }}
           >
-            {t("disclaimer")}
+            <MarkdownWrapper>{epigraph}</MarkdownWrapper>
           </Box>
         </Box>
       </Box>

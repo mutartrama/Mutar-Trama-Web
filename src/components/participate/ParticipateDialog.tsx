@@ -33,7 +33,7 @@ export const ParticipateDialog = ({
   buttonLabel,
   content,
   image,
-}: ParticipateDialogProps) => {
+}: Partial<ParticipateDialogProps>) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -120,7 +120,7 @@ export const ParticipateDialog = ({
                 },
               }}
             >
-              {content}
+              {content || ""}
             </MarkdownWrapper>
           </Box>
         </DialogContent>

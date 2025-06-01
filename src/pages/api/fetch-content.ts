@@ -78,7 +78,45 @@ export default async function handler(
       results[sheetName] = mapped;
     }
 
-    return res.status(200).json({ success: true, data: results });
+    // Procesar static_texts
+    const staticTextsSheet = doc.sheetsByTitle["static_texts"];
+    const staticRows = await staticTextsSheet.getRows();
+
+    const filteredStaticRows = staticRows.filter(
+      (row) => !lang || row.get("lang") === lang,
+    );
+
+    const staticTexts: Record<
+      string,
+      {
+        section: string;
+        title: string;
+        paragraph: string;
+        epigraph: string;
+        lang: string;
+      }
+    > = {};
+
+    for (const row of filteredStaticRows) {
+      const key = row.get("key");
+      if (!key) continue;
+
+      staticTexts[key] = {
+        section: row.get("section"),
+        title: row.get("title"),
+        paragraph: row.get("paragraph"),
+        epigraph: row.get("epigraph"),
+        lang: row.get("lang"),
+      };
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...results,
+        static_texts: staticTexts,
+      },
+    });
   } catch (error) {
     console.error("Error al leer las hojas:", error);
     return res

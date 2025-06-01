@@ -1,12 +1,12 @@
 import { Link } from "@/i18n/routing";
-import { Box, Button, Card, CardMedia, Typography } from "@mui/material";
+import { Box, Button, Card, CardMedia } from "@mui/material";
 import Image from "next/image";
 import Icon from "../icon/Icon";
-import { NewsItemProps } from "./news.types";
 import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 import { truncateText } from "@/lib/truncateText";
+import { NewsTabItem } from "@/pages/api/responses";
 
-export const NewCard = (newCardData: NewsItemProps) => {
+export const NewCard = (newCardData: NewsTabItem) => {
   return (
     <Card
       elevation={0}
@@ -14,7 +14,7 @@ export const NewCard = (newCardData: NewsItemProps) => {
         bgcolor: "transparent",
         display: "flex",
         flexDirection: "column",
-        gap: { xs: 3, xl: 5 },
+        gap: { xs: 10, xl: 5 },
         borderRadius: 0,
         border: "none",
         pb: 5,
@@ -26,10 +26,12 @@ export const NewCard = (newCardData: NewsItemProps) => {
     >
       <Box
         sx={{
-          "& h2": {
+          "& *": {
             fontSize: { xs: 42, lg: 54, xl: 72 },
             fontFamily: "var(--font-viaoda-libre)",
             margin: 0,
+            lineHeight: 1,
+            fontWeight: 400,
           },
         }}
       >
@@ -51,9 +53,17 @@ export const NewCard = (newCardData: NewsItemProps) => {
           style={{ objectFit: "cover" }}
         ></Image>
       </CardMedia>
-      <Typography fontFamily="var(--font-telegraf-800)">
-        {newCardData.epigraph}
-      </Typography>
+      <Box
+        sx={{
+          fontFamily: "var(--font-telegraf-800)",
+
+          "& p": {
+            margin: 0,
+          },
+        }}
+      >
+        <MarkdownWrapper>{newCardData.epigraph}</MarkdownWrapper>
+      </Box>
       <MarkdownWrapper>
         {truncateText(newCardData.paragraph, 150)}
       </MarkdownWrapper>

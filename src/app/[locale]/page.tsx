@@ -7,32 +7,28 @@ import { News } from "@/components/news/News";
 import { AboutNetwork } from "@/components/about-network/AboutNetwork";
 import { Projects } from "@/components/projects/Projects";
 import { MenuItemMobile } from "@/components/menu/MenuItemMobile";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { Footer } from "@/components/footer/Footer";
-import "./page.css";
 import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 import { Participate } from "@/components/participate/Participate";
-import { SkeletonContent } from "@/components/skeleton/skeleton";
 import { useSearchParams } from "next/navigation";
-
-interface DataResponse {
-  newsList: any[];
-  aboutList: any[];
-  projectsList: any[];
-}
+import { GoogleSheetsResponse } from "@/pages/api/responses";
+import "./page.css";
 
 export default function HomePage() {
   const t = useTranslations("MenuItems");
   const locale = useLocalePath();
   const searchParams = useSearchParams();
 
+  const theme = useTheme();
+  const isDownMd = useMediaQuery(theme.breakpoints.down("md"));
   const { toggleMenuOpen } = useGlobalNavigationLayout();
 
   const lastReachedEndRef = useRef(false);
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [data, setData] = useState<DataResponse>();
+  const [data, setData] = useState<GoogleSheetsResponse>();
   const [reachedEnd, setReachedEnd] = useState(false);
 
   useEffect(() => {
@@ -42,13 +38,9 @@ export default function HomePage() {
           cache: "force-cache",
           next: { revalidate: 1800 }, // 30 minutes
         });
-        const { data } = await res.json();
+        const { data }: { data: GoogleSheetsResponse } = await res.json();
 
-        setData({
-          newsList: data.news_tab,
-          aboutList: data.about_tab,
-          projectsList: data.projects_tab,
-        });
+        setData(data);
       } catch (error) {
         console.log("Error fetching data:", error);
       }
@@ -58,23 +50,52 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const items = document.querySelectorAll("[data-sticky-index]");
-      let newActiveIndex: number | null = null;
+      const mobileScrollHandler = () => {
+        const items = document.querySelectorAll("[data-sticky-index]");
+        let newActiveIndex: number | null = null;
 
-      items.forEach((item) => {
-        const rect = item.getBoundingClientRect();
-        const index = parseInt(item.getAttribute("data-sticky-index")!);
-        const stickyTop = 70 + 48 * (index - 1);
-        const isSticky = rect.top <= stickyTop && rect.bottom > stickyTop;
+        items.forEach((item) => {
+          const rect = item.getBoundingClientRect();
+          const index = parseInt(item.getAttribute("data-sticky-index")!);
+          const stickyTop = 70 + 48 * (index - 1);
+          const isSticky = rect.top <= stickyTop && rect.bottom > stickyTop;
 
-        if (isSticky) {
-          newActiveIndex = index;
-        }
-      });
+          if (isSticky) {
+            newActiveIndex = index;
+          }
+        });
 
-      setActiveIndex((prev) =>
-        prev !== newActiveIndex ? newActiveIndex : prev,
-      );
+        setActiveIndex((prev) =>
+          prev !== newActiveIndex ? newActiveIndex : prev,
+        );
+      };
+      const desktopScrollHandler = () => {
+        const items = document.querySelectorAll("[data-sticky-index]");
+        let newActiveIndex: number | null = null;
+
+        items.forEach((item) => {
+          const rect = item.getBoundingClientRect();
+          const index = parseInt(item.getAttribute("data-sticky-index")!);
+          const stickyTop = 48 * (index - 1);
+
+          const isSticky = rect.top <= stickyTop && rect.bottom > stickyTop;
+
+          if (isSticky) {
+            newActiveIndex = index;
+          }
+        });
+
+        setActiveIndex((prev) =>
+          prev !== newActiveIndex ? newActiveIndex : prev,
+        );
+      };
+
+      if (isDownMd) {
+        mobileScrollHandler();
+      } else {
+        desktopScrollHandler();
+      }
+
       // Detectar si el scroll llegó al final (de verdad)
       const scrollBottom = window.innerHeight + window.scrollY;
       const docHeight = document.documentElement.scrollHeight;
@@ -92,7 +113,7 @@ export default function HomePage() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isDownMd]);
 
   useEffect(() => {
     if (data && searchParams) {
@@ -133,8 +154,6 @@ export default function HomePage() {
     }
   }, [data]);
 
-  console.log(data);
-
   return (
     <Box sx={{ minHeight: "100vh" }}>
       <Header
@@ -143,7 +162,7 @@ export default function HomePage() {
         activeIndex={activeIndex}
       />
 
-      <Hero />
+      <Hero {...data?.static_texts?.hero} />
 
       <MenuItemMobile
         index={1}
@@ -154,7 +173,13 @@ export default function HomePage() {
         {t("news")}
       </MenuItemMobile>
 
-      {data?.newsList && <News newsList={data.newsList} />}
+      <News
+        newsList={
+          data
+            ? [...data?.news_tab, ...data?.news_tab, ...data?.news_tab]
+            : undefined
+        }
+      />
 
       <MenuItemMobile
         index={2}
@@ -165,7 +190,7 @@ export default function HomePage() {
         {t("aboutNetwork")}
       </MenuItemMobile>
 
-      {data ? <AboutNetwork /> : <SkeletonContent />}
+      <AboutNetwork {...data?.static_texts.about_us} />
 
       <MenuItemMobile
         index={3}
@@ -176,7 +201,7 @@ export default function HomePage() {
         {t("projects")}
       </MenuItemMobile>
 
-      {data?.projectsList && <Projects projectsList={data.projectsList} />}
+      <Projects projectsList={data?.projects_tab} />
 
       <MenuItemMobile
         index={4}
@@ -187,8 +212,13 @@ export default function HomePage() {
         {t("participate")}
       </MenuItemMobile>
 
-      <Participate />
-      <Footer reachedEnd={reachedEnd} />
+      <Participate
+        {...data?.static_texts.participate}
+        modal_colab={data?.static_texts.modal_colab}
+        modal_prop={data?.static_texts.modal_prop}
+        modal_res={data?.static_texts.modal_res}
+      />
+      <Footer {...data?.static_texts.footer} reachedEnd={reachedEnd} />
     </Box>
   );
 }

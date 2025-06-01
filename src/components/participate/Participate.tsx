@@ -3,15 +3,26 @@ import { Box, Stack, Typography } from "@mui/material";
 import { ParticipateDialog } from "./ParticipateDialog";
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
-import { useTranslations } from "next-intl";
-import Markdown from "react-markdown";
 import { DecoCircles } from "./DecoCircles";
 import { DecoDrops } from "./DecoDrops";
 import { DecoArrowsGrid } from "./DecoArrowsGrid";
+import { StaticTextSection } from "@/pages/api/responses";
+import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 
-export const Participate = () => {
+interface ParticipateProps extends StaticTextSection {
+  modal_prop: StaticTextSection;
+  modal_colab: StaticTextSection;
+  modal_res: StaticTextSection;
+}
+
+export const Participate = ({
+  title,
+  paragraph,
+  modal_colab,
+  modal_prop,
+  modal_res,
+}: Partial<ParticipateProps>) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const t = useTranslations("Participate");
 
   useEffect(() => {
     if (contentRef.current) {
@@ -58,31 +69,35 @@ export const Participate = () => {
         <Stack ref={contentRef} gap={12} sx={{ maxWidth: 580 }}>
           <Typography
             variant="h2"
-            sx={{ fontSize: { lg: 100 }, lineHeight: 1 }}
+            sx={{
+              fontSize: { lg: 54, xl: 100 },
+              lineHeight: 1,
+              transform: "translateY(20px)",
+            }}
           >
-            {t("title")}
+            <MarkdownWrapper>{title}</MarkdownWrapper>
           </Typography>
           <Box
             sx={{
               fontSize: { lg: 18 },
             }}
           >
-            <Markdown>{t("description")}</Markdown>
+            <MarkdownWrapper>{paragraph}</MarkdownWrapper>
           </Box>
           <Stack>
             <ParticipateDialog
-              buttonLabel={t("modalTitle1")}
-              content={t("modalText1")}
+              buttonLabel={modal_res?.title}
+              content={modal_res?.epigraph}
               image={<DecoCircles />}
             />
             <ParticipateDialog
-              buttonLabel={t("modalTitle2")}
-              content={t("modalText2")}
+              buttonLabel={modal_colab?.title}
+              content={modal_colab?.epigraph}
               image={<DecoDrops />}
             />
             <ParticipateDialog
-              buttonLabel={t("modalTitle3")}
-              content={t("modalText3")}
+              buttonLabel={modal_prop?.title}
+              content={modal_prop?.epigraph}
               image={<DecoArrowsGrid />}
             />
           </Stack>

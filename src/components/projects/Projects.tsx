@@ -3,20 +3,20 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { ProjectCard } from "./ProjectsCard";
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
-import { ProjectsItemProps } from "./projects.types";
+import { ProjectsTabItem } from "@/pages/api/responses";
 
 interface ProjectsProps {
-  projectsList: ProjectsItemProps[];
+  projectsList: ProjectsTabItem[];
 }
 
-export const Projects = ({ projectsList }: ProjectsProps) => {
+export const Projects = ({ projectsList }: Partial<ProjectsProps>) => {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
   const newsList = useRef<HTMLDivElement>(null);
   const newsSection = useRef<HTMLDivElement>(null);
 
-  const panelCount = projectsList.length - 1;
+  const panelCount = (projectsList?.length || 2) - 1;
 
   useEffect(() => {
     if (newsList.current && newsSection.current) {
@@ -69,8 +69,8 @@ export const Projects = ({ projectsList }: ProjectsProps) => {
         ref={newsList}
         sx={{ display: "flex", position: "sticky", top: 0, flexWrap: "nowrap" }}
       >
-        {projectsList.map(
-          ({ key, ...data }: ProjectsItemProps, index: number) => (
+        {projectsList?.map(
+          ({ key, ...data }: ProjectsTabItem, index: number) => (
             <Box
               key={`${key}-${index}`}
               className="projects-card"
@@ -85,7 +85,7 @@ export const Projects = ({ projectsList }: ProjectsProps) => {
                 pr: { lg: "100px" },
               }}
             >
-              <ProjectCard {...data} />
+              <ProjectCard key={key} {...data} />
             </Box>
           ),
         )}

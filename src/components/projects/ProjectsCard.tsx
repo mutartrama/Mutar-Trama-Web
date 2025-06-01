@@ -83,11 +83,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Box, IconButton, Typography } from "@mui/material";
-import { ProjectsItemProps } from "./projects.types";
 import { Link } from "@/i18n/routing";
 import Icon from "../icon/Icon";
+import { ProjectsTabItem } from "@/pages/api/responses";
 
-export const ProjectCard = (projectCardData: ProjectsItemProps) => {
+export const ProjectCard = (projectCardData: ProjectsTabItem) => {
   const [hovered, setHovered] = useState(false);
 
   return (

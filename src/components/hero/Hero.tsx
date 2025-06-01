@@ -97,11 +97,9 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
-import { useTranslations } from "next-intl";
+import { StaticTextSection } from "@/pages/api/responses";
 
-export const Hero = () => {
-  const t = useTranslations("Hero");
-
+export const Hero = (props: Partial<StaticTextSection>) => {
   return (
     <Stack
       id="hero"
@@ -152,7 +150,7 @@ export const Hero = () => {
             transform: "translateY(20px)",
           }}
         >
-          {t("title")}
+          {props?.title}
         </Typography>
       </Stack>
       <Box
