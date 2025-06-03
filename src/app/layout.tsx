@@ -14,7 +14,7 @@ import "./global.css";
 
 interface LayoutProps {
   children: ReactNode;
-  params: Promise<any>;
+  params: { locale: string };
 }
 
 const viaodaLibre = localFont({
@@ -56,7 +56,7 @@ export const viewport: Viewport = {
 // content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0, target-densitydpi=device-dpi"
 
 export default async function RootLayout({ children, params }: LayoutProps) {
-  const { locale } = await params; // params should be awaited before using its properties.
+  const { locale } = params;
 
   if (!routing.locales.includes(locale as any)) {
     // notFound();
@@ -67,7 +67,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
 
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${viaodaLibre.variable} ${telegraf200.variable}  ${telegraf400.variable}  ${telegraf800.variable}`}
     >
       <body>
