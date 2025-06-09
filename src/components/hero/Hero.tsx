@@ -1,105 +1,12 @@
-// import { Box, Stack, Typography } from "@mui/material";
-// import { FlowerHeadPerson } from "./flower-head-person/FlowerHeadPerson";
-// import Image from "next/image";
-// import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
-// import { useEffect, useRef } from "react";
-// import { animate } from "motion";
-// import { useTranslations } from "next-intl";
-
-// export const Hero = ({  }: Record<any, any>) => {
-//   const t = useTranslations("Hero");
-//   const heroImageRef = useRef<HTMLElement>(null);
-//   const heroTitleRef = useRef<HTMLElement>(null);
-//   const heroAnimRef = useRef<HTMLElement>(null);
-
-//   useEffect(() => {
-//     if (heroImageRef.current && heroTitleRef.current && heroAnimRef.current) {
-//       animate(heroImageRef.current, { opacity: 1 }, { delay: 1, duration: 1 });
-//       animate(
-//         heroTitleRef.current,
-//         { opacity: 1 },
-//         { delay: 1.5, duration: 1 },
-//       );
-//       animate(heroAnimRef.current, { opacity: 1 }, { delay: 2, duration: 1.5 });
-//     }
-//   }, [heroImageRef, heroTitleRef, heroAnimRef]);
-
-//   return (
-//     <Stack
-//       id="hero"
-//       className="hero-section"
-//       sx={{
-//         flexDirection: { xs: "column", lg: "row" },
-//         bgcolor: "background.paper",
-//         color: "text.secondary",
-//         minHeight: "100vh",
-//         p: 5,
-//         pb: 2,
-//         pt: "calc(70px + 1rem)",
-//         justifyContent: "space-between",
-//         alignItems: { xs: "stretch", lg: "center" },
-//         pl: { lg: "calc(120px + 1rem)", xl: "calc(160px + 1rem)" },
-//         position: "relative",
-//         overflowX: "hidden",
-//       }}
-//     >
-//       <Stack gap={8} sx={{ pl: { lg: 10, xl: 32 }, mt: { lg: -16 } }}>
-//         <Box
-//           ref={heroImageRef}
-//           sx={{
-//             mixBlendMode: "darken",
-//             display: { xs: "none", lg: "block" },
-//             position: "relative",
-//             width: { lg: 638 },
-//             height: { lg: 104 },
-//             opacity: 0,
-//           }}
-//         >
-//           <Image
-//             src="/images/mutar-trama-logo-large.png"
-//             alt="Mutar Trama"
-//             fill={true}
-//           />
-//         </Box>
-//         <Typography
-//           ref={heroTitleRef}
-//           variant="h1"
-//           sx={{
-//             fontSize: { xs: 56, lg: 72, xl: 72 },
-//             textAlign: { xs: "center", lg: "left" },
-//             maxWidth: { xs: 335, lg: 658 },
-//             alignSelf: "center",
-//             opacity: 0,
-//           }}
-//         >
-//           {t("title")}
-//         </Typography>
-//       </Stack>
-//       <Box
-//         ref={heroAnimRef}
-//         sx={{
-//           opacity: 0,
-//         }}
-//       >
-//         <FlowerHeadPerson />
-//       </Box>
-//       <Stack
-//         justifyContent="center"
-//         alignItems="center"
-//         sx={{ display: { lg: "none" } }}
-//       >
-//         <SwitchLanguageButton />
-//       </Stack>
-//     </Stack>
-//   );
-// };
-
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { SwitchLanguageButton } from "../switch-laguage/SwitchLanguage";
-import { StaticTextSection } from "@/pages/api/responses";
+import { StaticTextSection } from "@/app/api/responses";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
-export const Hero = (props: Partial<StaticTextSection>) => {
+export const Hero = ({ title }: Partial<StaticTextSection>) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <Stack
       id="hero"
@@ -121,40 +28,106 @@ export const Hero = (props: Partial<StaticTextSection>) => {
     >
       <Stack gap={8} sx={{ pl: { lg: 10, xl: 32 }, mt: { lg: -16 } }}>
         <Box
-          className="fade-in"
+          component={motion.div}
           sx={{
-            mixBlendMode: "darken",
             display: { xs: "none", lg: "block" },
             position: "relative",
             width: { lg: 638 },
             height: { lg: 104 },
-            opacity: 0,
-            transform: "translateY(20px)",
           }}
         >
           <Image
+            onLoad={() => setImageLoaded(true)}
             src="/images/mutar-trama-logo-large.png"
             alt="Mutar Trama"
             fill
+            style={{
+              mixBlendMode: "darken",
+              opacity: imageLoaded ? 1 : 0,
+            }}
           />
+          <Box
+            sx={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              display: imageLoaded ? "none" : "block",
+            }}
+          >
+            <Skeleton
+              sx={{
+                width: "100%",
+                height: "100%",
+                bgcolor: "grey.100",
+                m: 0,
+                transform: "scaleY(1)",
+              }}
+            />
+          </Box>
         </Box>
         <Typography
-          className="fade-in"
           variant="h1"
           sx={{
             fontSize: { xs: 56, lg: 72, xl: 72 },
             textAlign: { xs: "center", lg: "left" },
+            width: "100%",
             maxWidth: { xs: 335, lg: 658 },
             alignSelf: "center",
-            opacity: 0,
             transform: "translateY(20px)",
           }}
         >
-          {props?.title}
+          {title ? (
+            <Box
+              component={motion.span}
+              whileInView={{ opacity: 1 }}
+              sx={{ opacity: 0 }}
+            >
+              {title}
+            </Box>
+          ) : (
+            <Box
+              component="span"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: { xs: "center", lg: "unset" },
+              }}
+            >
+              <Skeleton
+                sx={{
+                  width: { xs: "45vw", lg: "30vw", xl: "35vw" },
+                  bgcolor: "grey.100",
+                }}
+              />
+              <Skeleton
+                sx={{
+                  width: { xs: "60vw", lg: "35vw", xl: "30vw" },
+                  bgcolor: "grey.100",
+                }}
+              />
+              <Skeleton
+                sx={{
+                  bgcolor: "grey.100",
+                  width: { xs: "55vw", lg: "22vw" },
+                  display: { xl: "none" },
+                }}
+              />
+              <Skeleton
+                width="50vw"
+                sx={{
+                  bgcolor: "grey.100",
+                  display: { lg: "none", xl: "none" },
+                }}
+              />
+            </Box>
+          )}
         </Typography>
       </Stack>
       <Box
-        className="fade-in"
+        component={motion.span}
+        whileInView={{ opacity: 1 }}
         sx={{
           opacity: 0,
           mixBlendMode: "darken",

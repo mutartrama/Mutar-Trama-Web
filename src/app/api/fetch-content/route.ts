@@ -1,21 +1,22 @@
-//  src/pages/api/fetch-cards.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+// app/api/fetch-content/route.ts
+import { NextRequest } from "next/server";
 import { doc } from "@/services/google-spreadsheet";
 
 const sheetNames = ["news_tab", "about_tab", "projects_tab"] as const;
 type SheetName = (typeof sheetNames)[number];
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const { lang } = req.query;
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url!);
+  const lang = searchParams.get("lang");
 
   if (lang && typeof lang !== "string") {
-    return res.status(400).json({
-      success: false,
-      error: "El parámetro 'lang' debe ser un string",
-    });
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: "El parámetro 'lang' debe ser un string",
+      }),
+      { status: 400 },
+    );
   }
 
   try {
@@ -54,6 +55,10 @@ export default async function handler(
               title: row.get("title"),
               image: row.get("image"),
               paragraph: row.get("paragraph"),
+              tags: row
+                .get("tags")
+                ?.split(",")
+                .map((tag: string) => tag.trim()),
               btnLabel: row.get("btn_label"),
               btnUrl: row.get("btn_url"),
               lang: row.get("lang"),
@@ -78,7 +83,7 @@ export default async function handler(
       results[sheetName] = mapped;
     }
 
-    // Procesar static_texts
+    // Static texts
     const staticTextsSheet = doc.sheetsByTitle["static_texts"];
     const staticRows = await staticTextsSheet.getRows();
 
@@ -110,7 +115,7 @@ export default async function handler(
       };
     }
 
-    return res.status(200).json({
+    return Response.json({
       success: true,
       data: {
         ...results,
@@ -119,8 +124,12 @@ export default async function handler(
     });
   } catch (error) {
     console.error("Error al leer las hojas:", error);
-    return res
-      .status(500)
-      .json({ success: false, error: "Error al leer las hojas de cálculo" });
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: "Error al leer las hojas de cálculo",
+      }),
+      { status: 500 },
+    );
   }
 }

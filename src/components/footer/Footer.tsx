@@ -3,9 +3,10 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import Icon from "../icon/Icon";
 import { NewsletterField } from "../newsletter-field/NewsletterField";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { scroll, animate } from "motion";
-import { StaticTextSection } from "@/pages/api/responses";
+import { StaticTextSection } from "@/app/api/responses";
+import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 
 interface FooterProps extends Partial<StaticTextSection> {
   reachedEnd: boolean;
@@ -15,6 +16,9 @@ const backgroundColors = ["#1F1F1F", "#0D0D0D"]; // color normal y color reached
 
 export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
   const t = useTranslations("Footer");
+  const [newsletterStatus, setNewsletterStatus] = useState<
+    "loading" | "success" | "error" | null
+  >(null);
 
   const contentRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -22,6 +26,31 @@ export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
   const backgroundColor = reachedEnd
     ? backgroundColors[1]
     : backgroundColors[0];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleSubscribeNewsletter = async (email: string) => {
+    setNewsletterStatus("loading");
+    const res = await fetch("/api/submit-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        tag: "homepage_newsletter",
+      }),
+    });
+
+    const result = await res.json();
+
+    if (result.success) {
+      setNewsletterStatus("success");
+    } else {
+      setNewsletterStatus("error");
+    }
+
+    setTimeout(() => {
+      setNewsletterStatus(null);
+    }, 3500);
+  };
 
   useEffect(() => {
     if (contentRef.current) {
@@ -82,7 +111,7 @@ export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
               fontFamily: "var(--font-telegraf-800)",
             }}
           >
-            {paragraph}
+            <MarkdownWrapper>{paragraph}</MarkdownWrapper>
           </Typography>
           <Box>
             <Button
@@ -113,7 +142,10 @@ export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
           </Typography>
           <Typography>{t("newsletterText")}</Typography>
 
-          <NewsletterField onSubmit={() => {}} isSubmited={false} />
+          <NewsletterField
+            onSubmit={handleSubscribeNewsletter}
+            status={newsletterStatus}
+          />
         </Stack>
         <Stack direction="column" gap={1}>
           <Link
@@ -148,7 +180,9 @@ export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
           </Link>
         </Stack>
         <Stack direction="column" gap={4} pb={4}>
-          <Typography sx={{ fontSize: 12 }}>{epigraph}</Typography>
+          <Typography sx={{ fontSize: 12 }}>
+            <MarkdownWrapper>{epigraph}</MarkdownWrapper>
+          </Typography>
         </Stack>
       </Stack>
       <Box id="footer-menu" />

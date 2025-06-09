@@ -3,7 +3,7 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
 import { NewCard } from "./NewCard";
-import { NewsTabItem, StaticTextSection } from "@/pages/api/responses";
+import { NewsTabItem, StaticTextSection } from "@/app/api/responses";
 
 interface NewsProps extends Partial<StaticTextSection> {
   newsList: NewsTabItem[];
@@ -86,10 +86,9 @@ export const News = ({ newsList }: Partial<NewsProps>) => {
             key={`${key}-${index}`}
             className="home-news-card"
             sx={{
-              width: { xs: "100vw", lg: 800 },
+              width: { xs: "100vw", lg: 800, xl: "60vw" },
               flex: "0 0 auto",
               height: "100vh",
-              pt: { xs: "120px", lg: "25px", xl: "50px" },
             }}
           >
             <NewCard key={key} {...data} />

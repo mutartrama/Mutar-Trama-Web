@@ -3,7 +3,7 @@ import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { ProjectCard } from "./ProjectsCard";
 import { useEffect, useRef } from "react";
 import { animate, scroll } from "motion";
-import { ProjectsTabItem } from "@/pages/api/responses";
+import { ProjectsTabItem } from "@/app/api/responses";
 
 interface ProjectsProps {
   projectsList: ProjectsTabItem[];
@@ -61,7 +61,7 @@ export const Projects = ({ projectsList }: Partial<ProjectsProps>) => {
         width: "100vw",
         position: "relative",
         height: `${panelCount * 100}vh`,
-        pl: { lg: "290px", xl: "420px" },
+        pl: { lg: "390px", xl: "420px" },
         bgcolor: "background.paper",
       }}
     >

@@ -15,6 +15,7 @@ export interface AboutTabItem {
   image: string;
   paragraph: string;
   btnLabel: string;
+  tags: string[];
   btnUrl: string;
   lang: string;
 }
@@ -42,9 +43,9 @@ export interface StaticTexts {
   hero: StaticTextSection;
   about_us: StaticTextSection;
   participate: StaticTextSection;
-  modal_res: StaticTextSection;
-  modal_colab: StaticTextSection;
-  modal_prop: StaticTextSection;
+  modal_resonate: StaticTextSection;
+  modal_colaborate: StaticTextSection;
+  modal_proposal: StaticTextSection;
   footer: StaticTextSection;
 }
 

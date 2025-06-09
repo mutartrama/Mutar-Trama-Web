@@ -13,7 +13,7 @@ import { Footer } from "@/components/footer/Footer";
 import { useGlobalNavigationLayout } from "@/contexts/global-navigation-layout";
 import { Participate } from "@/components/participate/Participate";
 import { useSearchParams } from "next/navigation";
-import { GoogleSheetsResponse } from "@/pages/api/responses";
+import { GoogleSheetsResponse } from "@/app/api/responses";
 import "./page.css";
 
 export default function HomePage() {
@@ -39,10 +39,10 @@ export default function HomePage() {
           next: { revalidate: 1800 }, // 30 minutes
         });
         const { data }: { data: GoogleSheetsResponse } = await res.json();
-
+        console.log(data);
         setData(data);
       } catch (error) {
-        console.log("Error fetching data:", error);
+        alert("Error fetching data:" + JSON.stringify(error));
       }
     };
     getData();
@@ -50,51 +50,30 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const mobileScrollHandler = () => {
-        const items = document.querySelectorAll("[data-sticky-index]");
-        let newActiveIndex: number | null = null;
+      const items = document.querySelectorAll("[data-sticky-index]");
+      let newActiveIndex: number | null = null;
 
-        items.forEach((item) => {
-          const rect = item.getBoundingClientRect();
-          const index = parseInt(item.getAttribute("data-sticky-index")!);
-          const stickyTop = 70 + 48 * (index - 1);
-          const isSticky = rect.top <= stickyTop && rect.bottom > stickyTop;
+      items.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const index = parseInt(item.getAttribute("data-sticky-index")!);
+        const stickyTop = isDownMd ? 70 + 48 * (index - 1) : 0;
+        const isSticky = isDownMd
+          ? rect.top <= stickyTop && rect.bottom > stickyTop
+          : rect.top === stickyTop;
 
-          if (isSticky) {
-            newActiveIndex = index;
-          }
-        });
+        if (isSticky) {
+          newActiveIndex = index;
+        }
+      });
 
-        setActiveIndex((prev) =>
-          prev !== newActiveIndex ? newActiveIndex : prev,
-        );
-      };
-      const desktopScrollHandler = () => {
-        const items = document.querySelectorAll("[data-sticky-index]");
-        let newActiveIndex: number | null = null;
+      setActiveIndex((prev) =>
+        prev !== newActiveIndex ? newActiveIndex : prev,
+      );
 
-        items.forEach((item) => {
-          const rect = item.getBoundingClientRect();
-          const index = parseInt(item.getAttribute("data-sticky-index")!);
-          const stickyTop = 48 * (index - 1);
-
-          const isSticky = rect.top <= stickyTop && rect.bottom > stickyTop;
-
-          if (isSticky) {
-            newActiveIndex = index;
-          }
-        });
-
-        setActiveIndex((prev) =>
-          prev !== newActiveIndex ? newActiveIndex : prev,
-        );
-      };
-
-      if (isDownMd) {
-        mobileScrollHandler();
-      } else {
-        desktopScrollHandler();
-      }
+      // if (isDownMd) {
+      // } else {
+      //   desktopScrollHandler();
+      // }
 
       // Detectar si el scroll llegó al final (de verdad)
       const scrollBottom = window.innerHeight + window.scrollY;
@@ -127,26 +106,6 @@ export default function HomePage() {
     }
   }, [searchParams, data]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleSubscribeNewsletter = async () => {
-    const res = await fetch("/api/submit-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: "prueba2@mail.com",
-        tag: "homepage_newsletter",
-      }),
-    });
-
-    const result = await res.json();
-
-    if (result.success) {
-      alert("¡Email guardado!");
-    } else {
-      alert("Error: " + result.error);
-    }
-  };
-
   useEffect(() => {
     if (data) {
       document.body.style.overflowY = "auto"; // Habilitar scroll
@@ -173,13 +132,7 @@ export default function HomePage() {
         {t("news")}
       </MenuItemMobile>
 
-      <News
-        newsList={
-          data
-            ? [...data?.news_tab, ...data?.news_tab, ...data?.news_tab]
-            : undefined
-        }
-      />
+      <News newsList={data?.news_tab} />
 
       <MenuItemMobile
         index={2}
@@ -190,7 +143,10 @@ export default function HomePage() {
         {t("aboutNetwork")}
       </MenuItemMobile>
 
-      <AboutNetwork {...data?.static_texts.about_us} />
+      <AboutNetwork
+        aboutList={data?.about_tab}
+        {...data?.static_texts?.about_us}
+      />
 
       <MenuItemMobile
         index={3}
@@ -213,12 +169,12 @@ export default function HomePage() {
       </MenuItemMobile>
 
       <Participate
-        {...data?.static_texts.participate}
-        modal_colab={data?.static_texts.modal_colab}
-        modal_prop={data?.static_texts.modal_prop}
-        modal_res={data?.static_texts.modal_res}
+        {...data?.static_texts?.participate}
+        modal_colaborate={data?.static_texts?.modal_colaborate}
+        modal_proposal={data?.static_texts?.modal_proposal}
+        modal_resonate={data?.static_texts?.modal_resonate}
       />
-      <Footer {...data?.static_texts.footer} reachedEnd={reachedEnd} />
+      <Footer {...data?.static_texts?.footer} reachedEnd={reachedEnd} />
     </Box>
   );
 }

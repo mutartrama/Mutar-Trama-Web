@@ -3,7 +3,7 @@ import { ReactNode, useLayoutEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import { Box, IconButton, styled } from "@mui/material";
+import { Box, IconButton, styled, Typography } from "@mui/material";
 import Icon from "../icon/Icon";
 import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 
@@ -19,6 +19,7 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
     borderTopRightRadius: 160,
     margin: theme.spacing(6),
     overflow: "visible",
+    maxWidth: 445,
   },
   "& p": {
     margin: 0,
@@ -93,35 +94,39 @@ export const ParticipateDialog = ({
         </Box>
         <DialogContent>
           <Box className="link-wrapper">
-            <MarkdownWrapper
-              components={{
-                // eslint-disable-next-line
-                a: ({ node, ...props }) => {
-                  const isInternal = props.href?.startsWith("#");
+            <Typography>
+              <MarkdownWrapper
+                components={{
+                  // eslint-disable-next-line
+                  a: ({ node, ...props }) => {
+                    const isInternal = props.href?.startsWith("#");
 
-                  return (
-                    <a
-                      {...props}
-                      target={isInternal ? undefined : "_blank"}
-                      rel={isInternal ? undefined : "noopener noreferrer"}
-                      onClick={(e) => {
-                        if (isInternal) {
-                          e.preventDefault(); // Evitás el comportamiento por defecto
-                          handleClose(); // Cerrás el modal
+                    return (
+                      <a
+                        {...props}
+                        target={isInternal ? undefined : "_blank"}
+                        rel={isInternal ? undefined : "noopener noreferrer"}
+                        onClick={(e) => {
+                          if (isInternal) {
+                            e.preventDefault(); // Evitás el comportamiento por defecto
+                            handleClose(); // Cerrás el modal
 
-                          setTimeout(() => {
-                            const el = document.querySelector(`${props.href}`);
-                            if (el) el.scrollIntoView({ behavior: "smooth" });
-                          }, 100);
-                        }
-                      }}
-                    />
-                  );
-                },
-              }}
-            >
-              {content || ""}
-            </MarkdownWrapper>
+                            setTimeout(() => {
+                              const el = document.querySelector(
+                                `${props.href}`,
+                              );
+                              if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }, 100);
+                          }
+                        }}
+                      />
+                    );
+                  },
+                }}
+              >
+                {content || ""}
+              </MarkdownWrapper>
+            </Typography>
           </Box>
         </DialogContent>
       </CustomDialog>

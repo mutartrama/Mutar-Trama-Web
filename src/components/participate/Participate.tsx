@@ -6,21 +6,21 @@ import { animate, scroll } from "motion";
 import { DecoCircles } from "./DecoCircles";
 import { DecoDrops } from "./DecoDrops";
 import { DecoArrowsGrid } from "./DecoArrowsGrid";
-import { StaticTextSection } from "@/pages/api/responses";
+import { StaticTextSection } from "@/app/api/responses";
 import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 
 interface ParticipateProps extends StaticTextSection {
-  modal_prop: StaticTextSection;
-  modal_colab: StaticTextSection;
-  modal_res: StaticTextSection;
+  modal_proposal: StaticTextSection;
+  modal_colaborate: StaticTextSection;
+  modal_resonate: StaticTextSection;
 }
 
 export const Participate = ({
   title,
   paragraph,
-  modal_colab,
-  modal_prop,
-  modal_res,
+  modal_colaborate,
+  modal_proposal,
+  modal_resonate,
 }: Partial<ParticipateProps>) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -86,18 +86,18 @@ export const Participate = ({
           </Box>
           <Stack>
             <ParticipateDialog
-              buttonLabel={modal_res?.title}
-              content={modal_res?.epigraph}
+              buttonLabel={modal_resonate?.title}
+              content={modal_resonate?.epigraph}
               image={<DecoCircles />}
             />
             <ParticipateDialog
-              buttonLabel={modal_colab?.title}
-              content={modal_colab?.epigraph}
+              buttonLabel={modal_colaborate?.title}
+              content={modal_colaborate?.epigraph}
               image={<DecoDrops />}
             />
             <ParticipateDialog
-              buttonLabel={modal_prop?.title}
-              content={modal_prop?.epigraph}
+              buttonLabel={modal_proposal?.title}
+              content={modal_proposal?.epigraph}
               image={<DecoArrowsGrid />}
             />
           </Stack>

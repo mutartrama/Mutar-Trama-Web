@@ -1,8 +1,9 @@
 "use client";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { PropsWithChildren, memo } from "react";
+import { PropsWithChildren, memo, useEffect, useRef } from "react";
 import Icon from "../icon/Icon";
 import { Link } from "@/i18n/routing";
+import { animate, scroll } from "motion";
 
 const backgroundColors = [
   "#6856D9",
@@ -41,6 +42,7 @@ const MenuItemMobileComponent = ({
   const stickyTop = isUpMd ? 0 : 70 + 48 * calculatedIndex;
   const isSticky = typeof activeIndex === "number" && activeIndex >= index;
 
+  const menuItemRef = useRef<HTMLDivElement>(null);
   const lastIndex = backgroundColors.length - 1;
 
   const getSafeIndex = (i: number) => Math.min(Math.max(i, 0), lastIndex); // asegura que el índice esté en rango
@@ -57,6 +59,26 @@ const MenuItemMobileComponent = ({
       ? foregroundColors[getSafeIndex(activeIndex - 1)]
       : foregroundColors[getSafeIndex(calculatedIndex)];
 
+  useEffect(() => {
+    if (menuItemRef.current) {
+      scroll(
+        animate(
+          menuItemRef.current as HTMLElement,
+          {
+            opacity: [0, 1],
+            y: [200, 0],
+          },
+          { duration: 1 },
+        ),
+        {
+          target: menuItemRef.current, // El elemento específico que queremos animar
+          offset: ["start end", "start 10%"],
+        },
+      );
+    }
+  }, [menuItemRef]);
+
+  console.log(index, isSticky);
   return (
     <Box
       component={Link}
@@ -98,13 +120,16 @@ const MenuItemMobileComponent = ({
             transformOrigin: "center left",
             transform: {
               xs: isSticky ? "scale(0.55)" : "scale(1)",
-              md: "rotate(-90deg) translateY(calc(50% + 12px))",
+              md: "rotate(-90deg) translateY(calc(50% + 12px)) ".concat(
+                isSticky ? "scale(0.65)" : "scale(1)",
+              ),
             },
             transition: "all 0.2s ease-out",
             gap: reachedEnd ? 3 : 2,
             fontSize: 28,
             transitionDelay: reachedEnd ? `${index * 0.15}s` : 0,
             textWrap: "nowrap",
+            pl: 2,
           }}
         >
           <Box
@@ -132,5 +157,6 @@ export const MenuItemMobile = memo(
   (prevProps, nextProps) =>
     prevProps.index === nextProps.index &&
     prevProps.activeIndex === nextProps.activeIndex &&
-    prevProps.reachedEnd === nextProps.reachedEnd,
+    prevProps.reachedEnd === nextProps.reachedEnd &&
+    prevProps.children === nextProps.children,
 );

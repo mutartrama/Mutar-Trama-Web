@@ -1,12 +1,98 @@
 import { Link } from "@/i18n/routing";
-import { Box, Button, Card, CardMedia } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardMedia,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Image from "next/image";
 import Icon from "../icon/Icon";
 import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
 import { truncateText } from "@/lib/truncateText";
-import { NewsTabItem } from "@/pages/api/responses";
+import { NewsTabItem } from "@/app/api/responses";
+import { useState } from "react";
+import { CustomDialog } from "../custom-dialog/CustomDialog";
+import { motion } from "framer-motion";
 
-export const NewCard = (newCardData: NewsTabItem) => {
+const ContentPanel = ({
+  title,
+  image,
+  paragraph,
+  epigraph,
+  btnUrl,
+  btnLabel,
+  truncate,
+  setOpen,
+}: Partial<NewsTabItem> & { truncate: boolean; setOpen?: () => void }) => {
+  const theme = useTheme();
+  const isUpLg = useMediaQuery(theme.breakpoints.up("lg"));
+
+  return (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: truncate ? "column" : "column-reverse",
+          gap: 5,
+        }}
+      >
+        <Typography variant="h2" sx={{ fontSize: 48 }}>
+          <MarkdownWrapper>{title}</MarkdownWrapper>
+        </Typography>
+        <CardMedia
+          component={motion.div}
+          whileInView={{ opacity: 1 }}
+          sx={{
+            position: "relative",
+            width: {
+              xs: truncate ? "100%" : "50%",
+              lg: 600,
+              xl: 720,
+            },
+            height: { xs: 115, lg: 400, xl: 420 },
+            opacity: 0,
+            "&:before": { content: '""', display: "block", pt: "56.25%" },
+          }}
+        >
+          {image && title && (
+            <Image src={image} alt={title} layout="fill" objectFit="cover" />
+          )}
+        </CardMedia>
+      </Box>
+      <Typography fontWeight={800}>
+        <MarkdownWrapper>{epigraph}</MarkdownWrapper>
+      </Typography>
+      <Typography>
+        {paragraph && (
+          <MarkdownWrapper>
+            {truncate && !isUpLg ? truncateText(paragraph, 150) : paragraph}
+          </MarkdownWrapper>
+        )}
+        &nbsp;
+        {truncate && !isUpLg && (
+          <Button sx={{ color: "#CD7575" }} onClick={setOpen}>
+            Leer más
+          </Button>
+        )}
+      </Typography>
+      <Link href={`${btnUrl}`}>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Icon icon="arrow-right" size={20} />}
+        >
+          {btnLabel}
+        </Button>
+      </Link>
+    </>
+  );
+};
+
+export const NewCard = (props: NewsTabItem) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <Card
       elevation={0}
@@ -14,68 +100,34 @@ export const NewCard = (newCardData: NewsTabItem) => {
         bgcolor: "transparent",
         display: "flex",
         flexDirection: "column",
-        gap: { xs: 10, xl: 5 },
+        gap: 5,
         borderRadius: 0,
         border: "none",
         pb: 5,
         px: { xs: 5, lg: 20 },
-        maxWidth: { lg: 800 },
+        width: "100%",
+        maxWidth: { lg: 800, xl: "100%" },
         height: "100%",
-        justifyContent: "center",
+        justifyContent: { xs: "flex-end", lg: "center" },
       }}
     >
-      <Box
-        sx={{
-          "& *": {
-            fontSize: { xs: 42, lg: 54, xl: 72 },
-            fontFamily: "var(--font-viaoda-libre)",
-            margin: 0,
-            lineHeight: 1,
-            fontWeight: 400,
-          },
-        }}
-      >
-        <MarkdownWrapper>{newCardData.title}</MarkdownWrapper>
-      </Box>
-      <CardMedia
-        sx={{
-          position: "relative",
-          width: "100%",
-          maxWidth: { lg: 400, xl: 680 },
-          maxHeight: { xs: 115, lg: "auto" },
-          "&:before": { content: '""', display: "block", pt: "56.25%" },
-        }}
-      >
-        <Image
-          src={newCardData.image}
-          alt={newCardData.title}
-          fill
-          style={{ objectFit: "cover" }}
-        ></Image>
-      </CardMedia>
-      <Box
-        sx={{
-          fontFamily: "var(--font-telegraf-800)",
-
-          "& p": {
-            margin: 0,
-          },
-        }}
-      >
-        <MarkdownWrapper>{newCardData.epigraph}</MarkdownWrapper>
-      </Box>
-      <MarkdownWrapper>
-        {truncateText(newCardData.paragraph, 150)}
-      </MarkdownWrapper>
-      <Link href={newCardData.btnUrl}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<Icon icon="arrow-right" size={20} />}
+      <ContentPanel
+        truncate={true}
+        setOpen={() => setIsOpen(true)}
+        {...props}
+      />
+      <CustomDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Box
+          sx={{
+            color: "text.secondary",
+            display: "flex",
+            flexDirection: "column",
+            gap: 5,
+          }}
         >
-          {newCardData.btnLabel}
-        </Button>
-      </Link>
+          <ContentPanel {...props} truncate={false} />
+        </Box>
+      </CustomDialog>
     </Card>
   );
 };

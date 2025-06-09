@@ -14,6 +14,8 @@
     "newsletterTitle": "Newsletter",
     "newsletterText": "Si querés estar el día con los proyectos e iniciativas que realizamos, dejanos tu email!",
     "newsletterInputPlaceholder": "Tu email",
+    "newsletterEmailError": "El email no tiene un formato válido.",
+    "newsletterNetworkError": "Ocurrió un error en la red, intenta nuevamente.",
     "contactUsLink": "Contactanos",
     "termsAndCoditions": "Términos generales de uso",
     "privacyPolicy": "Políticas de privacidad"
