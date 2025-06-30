@@ -84,6 +84,7 @@ export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
         px: 5,
         pl: { lg: "calc(120px + 75px * 4 + 2rem)", xl: "calc(160px + 1rem)" },
         pt: 24,
+        pb: 10,
         bgcolor: backgroundColor,
         backgroundImage: 'url("./images/deco_echo.png")',
         backgroundRepeat: "no-repeat",
@@ -98,17 +99,16 @@ export const Footer = ({ reachedEnd, paragraph, epigraph }: FooterProps) => {
       <Stack
         ref={contentRef}
         direction="column"
-        gap={8}
+        gap={15}
         sx={{
           maxWidth: { lg: 302, xl: 400 },
         }}
       >
         <Stack direction="column" gap={5}>
           <Typography
-            variant="h6"
             sx={{
               fontSize: 18,
-              fontFamily: "var(--font-telegraf-800)",
+              fontWeight: 400,
             }}
           >
             <MarkdownWrapper>{paragraph}</MarkdownWrapper>

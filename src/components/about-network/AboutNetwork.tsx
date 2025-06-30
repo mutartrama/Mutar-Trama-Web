@@ -168,7 +168,12 @@ export const AboutNetwork = ({
     >
       <Box
         ref={newsList}
-        sx={{ display: "flex", position: "sticky", top: 0, flexWrap: "nowrap" }}
+        sx={{
+          display: "flex",
+          position: "sticky",
+          top: 0,
+          flexWrap: "nowrap",
+        }}
       >
         <Box
           ref={firstPanelRef}
@@ -194,6 +199,7 @@ export const AboutNetwork = ({
             <AboutCard key={key} {...data} />
           </Box>
         ))}
+        <Box sx={{ width: 100 }} />
       </Box>
     </Box>
   );
@@ -210,11 +216,12 @@ const FirstPanel = ({
         width: { xs: "100vw", lg: "60vw" },
         display: "flex",
         flexDirection: "column",
-        height: "100%",
-        justifyContent: { xs: "flex-end", lg: "center" },
+        height: "100vh",
+        justifyContent: { xs: "flex-start", lg: "center" },
         gap: { xs: 10, md: 10, lg: 15, xl: 20 },
         maxWidth: { lg: "55vw" },
         p: 5,
+        pt: { xs: `${70 + 48 * 2 + 30}px`, lg: 0 },
         pr: { lg: 25 },
         "& p": { p: 0, m: 0, mb: 4 },
       }}

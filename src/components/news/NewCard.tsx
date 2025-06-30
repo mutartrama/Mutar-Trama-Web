@@ -1,17 +1,8 @@
 import { Link } from "@/i18n/routing";
-import {
-  Box,
-  Button,
-  Card,
-  CardMedia,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Card, CardMedia, Typography } from "@mui/material";
 import Image from "next/image";
 import Icon from "../icon/Icon";
 import { MarkdownWrapper } from "../markdown-wrapper/MarkdownWrapper";
-import { truncateText } from "@/lib/truncateText";
 import { NewsTabItem } from "@/app/api/responses";
 import { useState } from "react";
 import { CustomDialog } from "../custom-dialog/CustomDialog";
@@ -25,11 +16,7 @@ const ContentPanel = ({
   btnUrl,
   btnLabel,
   truncate,
-  setOpen,
-}: Partial<NewsTabItem> & { truncate: boolean; setOpen?: () => void }) => {
-  const theme = useTheme();
-  const isUpLg = useMediaQuery(theme.breakpoints.up("lg"));
-
+}: Partial<NewsTabItem> & { truncate: boolean }) => {
   return (
     <>
       <Box
@@ -66,17 +53,7 @@ const ContentPanel = ({
         <MarkdownWrapper>{epigraph}</MarkdownWrapper>
       </Typography>
       <Typography>
-        {paragraph && (
-          <MarkdownWrapper>
-            {truncate && !isUpLg ? truncateText(paragraph, 150) : paragraph}
-          </MarkdownWrapper>
-        )}
-        &nbsp;
-        {truncate && !isUpLg && (
-          <Button sx={{ color: "#CD7575" }} onClick={setOpen}>
-            Leer más
-          </Button>
-        )}
+        <MarkdownWrapper>{paragraph}</MarkdownWrapper>
       </Typography>
       <Link href={`${btnUrl}`}>
         <Button
@@ -105,17 +82,14 @@ export const NewCard = (props: NewsTabItem) => {
         border: "none",
         pb: 5,
         px: { xs: 5, lg: 20 },
+        pt: { xs: 30, lg: 0 },
         width: "100%",
         maxWidth: { lg: 800, xl: "100%" },
         height: "100%",
-        justifyContent: { xs: "flex-end", lg: "center" },
+        justifyContent: { xs: "flex-start", lg: "center" },
       }}
     >
-      <ContentPanel
-        truncate={true}
-        setOpen={() => setIsOpen(true)}
-        {...props}
-      />
+      <ContentPanel truncate={true} {...props} />
       <CustomDialog isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <Box
           sx={{

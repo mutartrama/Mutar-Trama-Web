@@ -96,10 +96,11 @@ export const ProjectCard = (projectCardData: ProjectsTabItem) => {
       sx={{
         height: "100vh",
         display: "flex",
-        alignItems: "flex-end",
+        alignItems: { xs: "flex-start", lg: "flex-end" },
         justifyContent: "center",
         width: "100%",
         px: 4,
+        pt: { xs: `${70 + 48 * 3 + 40}px`, lg: 0 },
         color: "text.secondary",
       }}
     >

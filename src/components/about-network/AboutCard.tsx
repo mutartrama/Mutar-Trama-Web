@@ -1,6 +1,5 @@
 import { AboutTabItem } from "@/app/api/responses";
 import { Link } from "@/i18n/routing";
-import { truncateText } from "@/lib/truncateText";
 import {
   Box,
   Button,
@@ -19,8 +18,7 @@ const ContentPanel = ({
   paragraph,
   tags,
   truncate,
-  setOpen,
-}: Partial<AboutTabItem> & { truncate: boolean; setOpen?: () => void }) => {
+}: Partial<AboutTabItem> & { truncate: boolean }) => {
   const theme = useTheme();
   const isUpLg = useMediaQuery(theme.breakpoints.up("lg"));
 
@@ -30,8 +28,8 @@ const ContentPanel = ({
         display: "flex",
         flexDirection: "column",
         gap: 5,
-        flex: { xs: 1, lg: "unset" },
         color: "inherit",
+        pt: { xs: `${70 + 48 * 2 + 30}px`, lg: 0 },
       }}
     >
       <Box
@@ -45,6 +43,7 @@ const ContentPanel = ({
           variant="h2"
           sx={{
             color: "inherit",
+            lineHeight: 1,
           }}
         >
           <MarkdownWrapper>{title}</MarkdownWrapper>
@@ -74,14 +73,10 @@ const ContentPanel = ({
       <Box>{tags?.map((tag) => <Typography key={tag}>{tag}</Typography>)}</Box>
       <Typography sx={{ height: { lg: 200 } }}>
         <MarkdownWrapper>
-          {truncate && !isUpLg ? truncateText(paragraph || "", 340) : paragraph}
+          {paragraph}
+          {/* {truncate && !isUpLg ? truncateText(paragraph || "", 340) : paragraph} */}
         </MarkdownWrapper>
         &nbsp;
-        {truncate && !isUpLg && (
-          <Button sx={{ color: "#CD7575" }} onClick={setOpen}>
-            Leer más
-          </Button>
-        )}
       </Typography>
     </Box>
   );
@@ -108,17 +103,9 @@ export const AboutCard = ({
         height: "100vh",
         px: 5,
         pb: 10,
-        pt: {
-          xs: (70 + 48 * 2) / 4 + 5,
-          lg: 0,
-        },
       }}
     >
-      <ContentPanel
-        {...{ title, image, paragraph, tags }}
-        truncate={true}
-        setOpen={() => setIsOpen(true)}
-      />
+      <ContentPanel {...{ title, image, paragraph, tags }} truncate={true} />
 
       <Box>
         <Button

@@ -123,6 +123,14 @@ export default function HomePage() {
 
       <Hero {...data?.static_texts?.hero} />
 
+      <Box
+        sx={{
+          display: { lg: "none", xs: "block" },
+          height: 60,
+          bgcolor: "#6856D9",
+        }}
+      />
+
       <MenuItemMobile
         index={1}
         reachedEnd={reachedEnd}
@@ -133,6 +141,14 @@ export default function HomePage() {
       </MenuItemMobile>
 
       <News newsList={data?.news_tab} />
+
+      <Box
+        sx={{
+          display: { lg: "none", xs: "block" },
+          height: 60,
+          bgcolor: "background.default",
+        }}
+      />
 
       <MenuItemMobile
         index={2}
@@ -148,6 +164,14 @@ export default function HomePage() {
         {...data?.static_texts?.about_us}
       />
 
+      <Box
+        sx={{
+          display: { lg: "none", xs: "block" },
+          height: 60,
+          bgcolor: "background.paper",
+        }}
+      />
+
       <MenuItemMobile
         index={3}
         reachedEnd={reachedEnd}
@@ -158,6 +182,14 @@ export default function HomePage() {
       </MenuItemMobile>
 
       <Projects projectsList={data?.projects_tab} />
+
+      <Box
+        sx={{
+          display: { lg: "none", xs: "block" },
+          height: 60,
+          bgcolor: "background.default",
+        }}
+      />
 
       <MenuItemMobile
         index={4}

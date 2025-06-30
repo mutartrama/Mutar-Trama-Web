@@ -66,19 +66,17 @@ const MenuItemMobileComponent = ({
           menuItemRef.current as HTMLElement,
           {
             opacity: [0, 1],
-            y: [200, 0],
           },
           { duration: 1 },
         ),
         {
           target: menuItemRef.current, // El elemento específico que queremos animar
-          offset: ["start end", "start 10%"],
+          offset: ["start end", "start 20%"],
         },
       );
     }
   }, [menuItemRef]);
 
-  console.log(index, isSticky);
   return (
     <Box
       component={Link}
@@ -101,7 +99,9 @@ const MenuItemMobileComponent = ({
       {...props}
     >
       <Box
+        ref={menuItemRef}
         sx={{
+          position: "relative",
           [theme.breakpoints.up("lg")]: {
             transform: "translateY(50%)",
             width: "66px",
@@ -119,9 +119,13 @@ const MenuItemMobileComponent = ({
             alignItems: "center",
             transformOrigin: "center left",
             transform: {
-              xs: isSticky ? "scale(0.55)" : "scale(1)",
+              xs: isSticky ? "scale(0.55) translateX(12px)" : "scale(1)",
               md: "rotate(-90deg) translateY(calc(50% + 12px)) ".concat(
-                isSticky ? "scale(0.65)" : "scale(1)",
+                reachedEnd
+                  ? "scale(0.9)"
+                  : isSticky
+                    ? "scale(0.65)"
+                    : "scale(1)",
               ),
             },
             transition: "all 0.2s ease-out",
@@ -129,7 +133,7 @@ const MenuItemMobileComponent = ({
             fontSize: 28,
             transitionDelay: reachedEnd ? `${index * 0.15}s` : 0,
             textWrap: "nowrap",
-            pl: 2,
+            pl: { xs: 5, lg: 2 },
           }}
         >
           <Box
@@ -138,7 +142,7 @@ const MenuItemMobileComponent = ({
             size={40}
             color="inherit"
             sx={{
-              transform: reachedEnd ? "scale(1.2)" : "scale(1)",
+              transformOrigin: "center left",
               transition: "transform 0.2s ease-out",
               transitionDelay: `${index * 0.15}s`,
             }}
